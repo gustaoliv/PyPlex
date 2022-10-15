@@ -36,23 +36,30 @@ def get_chart():
 def get_area(restr, numVar):
     util_area = []
     for value in restr:
-        pieces = value.split('=')
-
-        pieces = pieces[0].split('+') + list(pieces[1])
+        pieces = value.split('<=')
+        res = '-' + pieces[1]
+        pieces = pieces[0].split('+')
+        pieces.append(res)
         coeficients = []
         for piece in pieces:
-            if(not piece.strip()):
+            if not piece.strip():
                 continue
 
             coef = piece.strip().split('x')[0]
-            if(coef == ''):
+            if coef == '':
                 coef = 1
+            elif coef == '-':
+                coef = -1
             else:
                 coef = int(coef)
-
             coeficients.append(coef)
 
         util_area.append(coeficients)
+
+    for i in range(numVar):
+        line = list(np.zeros(numVar + 1))
+        line[i] = -1
+        util_area.append(line)
 
     return util_area
 
@@ -67,7 +74,7 @@ def render_inequalities(halfspaces, feasible_point, xlim, ylim):
     x = np.linspace(*xlim, 100)
 
     for h in halfspaces:
-        if h[1]== 0:
+        if h[1] == 0:
             ax.axvline(-h[2]/h[0], color="#2c3e50")
         else:
             ax.plot(x, (-h[2]-h[0]*x)/h[1], color="#2c3e50")

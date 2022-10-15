@@ -50,17 +50,10 @@ def third_step(request):
     values = baseurl.split('?')
     # chart = get_chart()
 
-    numVar = values[1]
+    numVar = int(values[1].split('=')[1])
     restr = values[2:]
-    # util_area = get_area(values, numVar)
-    util_area = [
-        [-1, 0, 0],  # x₁ ≥ 0
-        [0, -1, 0],  # x₂ ≥ 0
-        [-1, 1, -2],  # -x₁ + x₂ ≤ 2
-        [1, 0, -4],  # x₁ ≤ 4
-        [0, 1, -4],  # x₂ ≤ 4
-    ]
-    print(util_area)
+    util_area = get_area(restr, numVar)
+
     feasible_point = np.array([0.5, 0.5])
     # xmin = min(util_area[:][0])
     # ymin = min(util_area[:][1])
