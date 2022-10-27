@@ -1,31 +1,77 @@
 {
     "result": {
-        "optimum_point": [],
-        "optimum_value": 0,
+        "optimum_point": [2,2],
+        "optimum_value": 10,
         "iterations": [
             {
                 "expressions": [
                     {
-                        "coeficients": [1,2],
-                        "type": "<=",
-                        "value": 14
+                        "coeficients": [ -3, -2, 0, 0],
+                        "value": 0
                     },
                     {
-                        "coeficients": [1,1],
-                        "type": "<=",
+                        "coeficients": [2, 1, 1, 0],
+                        "value": 6
+                    },
+                    {
+                        "coeficients": [1, 2, 0, 1],
+                        "value": 6
+                    }
+                ],
+                "base_variables": ["sx3","sx4"],
+                "target_point": [0,0],
+                "point_label": "A",
+                "base_in": "x1",
+                "base_out": "sx3",
+                "is_optimum": false
+            },
+            {
+                "expressions": [
+                    {
+                        "coeficients": [0, -0.5, 1.5, 0],
                         "value": 9
                     },
                     {
-                        "coeficients": [7,4],
-                        "type": "<=",
-                        "value": 56
+                        "coeficients": [1, 0.5, 0.5, 0],
+                        "value": 3
+                    },
+                    {
+                        "coeficients": [0, 1.50, -0.5, 1],
+                        "value": 3
                     }
                 ],
-                "target_point": [0,0],
-                "point_label": "A"
+                "base_variables": ["x1","sx4"],
+                "target_point": [3,0],
+                "point_label": "B",
+                "base_in": "x2",
+                "base_out": "sx4",
+                "is_optimum": false
+            },
+            {
+                "expressions": [
+                    {
+                        "coeficients": [0, 0, 1.33, 0.33],
+                        "value": 10
+                    },
+                    {
+                        "coeficients": [1, 0, 0.67, -0.33],
+                        "value": 2
+                    },
+                    {
+                        "coeficients": [0, 1, -0.33, 0.67],
+                        "value": 2
+                    }
+                ],
+                "base_variables": ["x1","x2"],
+                "target_point": [2,2],
+                "point_label": "C",
+                "is_optimum": true
             }
         ],
-        "iterations_count": 0
+        "iterations_count": 0,
+        "input_variables": ["x1","x2"],
+        "slack_variables": ["sx3","sx4"],
+        "virtual_variables": []
     },
     "multiple_solutions": [
         {
