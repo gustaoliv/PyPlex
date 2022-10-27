@@ -1,0 +1,23 @@
+{
+    "method": "PRIMAL",
+    "objective": "MAXIMIZE",
+    "objective_function": [2, 5, 1],
+    "restrictions": [
+        {
+            "coeficients": [1,2],
+            "type": "<=",
+            "value": 14
+        },
+        {
+            "coeficients": [1,1],
+            "type": "<=",
+            "value": 9
+        },
+        {
+            "coeficients": [7,4],
+            "type": "<=",
+            "value": 56
+        }
+    ],
+    "variable_names": ["x1", "x2", "x3"]
+}

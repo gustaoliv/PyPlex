@@ -1,0 +1,81 @@
+{
+    "result": {
+        "optimum_point": [],
+        "optimum_value": 0,
+        "iterations": [
+            {
+                "expressions": [
+                    {
+                        "coeficients": [1,2],
+                        "type": "<=",
+                        "value": 14
+                    },
+                    {
+                        "coeficients": [1,1],
+                        "type": "<=",
+                        "value": 9
+                    },
+                    {
+                        "coeficients": [7,4],
+                        "type": "<=",
+                        "value": 56
+                    }
+                ],
+                "target_point": [0,0],
+                "point_label": "A"
+            }
+        ],
+        "iterations_count": 0
+    },
+    "multiple_solutions": [
+        {
+            "objective_function": [2, 5, 1],
+            "optimum_point": [],
+            "optimum_value": 0,
+            "restrictions": [
+                {
+                    "coeficients": [1,2],
+                    "type": "<=",
+                    "value": 14
+                },
+                {
+                    "coeficients": [1,1],
+                    "type": "<=",
+                    "value": 9
+                },
+                {
+                    "coeficients": [7,4],
+                    "type": "<=",
+                    "value": 56
+                }
+            ],
+            "iterations": [
+                {
+                    "expressions": [
+                        {
+                            "coeficients": [1,2],
+                            "type": "<=",
+                            "value": 14
+                        },
+                        {
+                            "coeficients": [1,1],
+                            "type": "<=",
+                            "value": 9
+                        },
+                        {
+                            "coeficients": [7,4],
+                            "type": "<=",
+                            "value": 56
+                        }
+                    ],
+                    "target_point": [0,0],
+                    "point_label": "A"
+                }
+            ],
+            "iterations_count": 0
+        }
+    ],
+    "status": 0,
+    "ellapsed_time": 0,
+    "error_msg": ""
+}
