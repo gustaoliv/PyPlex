@@ -68,7 +68,7 @@
                 "is_optimum": true
             }
         ],
-        "iterations_count": 0,
+        "iterations_count": 3,
         "input_variables": ["x1","x2"],
         "slack_variables": ["sx3","sx4"],
         "virtual_variables": []

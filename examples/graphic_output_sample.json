@@ -1,0 +1,33 @@
+{
+    "result": {
+        "iterations_path": ["A", "B", "C"],
+        "iterations_count": 3,
+        "variables": ["x1","x2"],
+        "points": [
+            {
+                "label": "A",
+                "coords": [0,0]
+            },
+            {
+                "label": "B",
+                "coords": [0,0]
+            },
+            {
+                "label": "C",
+                "coords": [0,0]
+            },
+            {
+                "label": "D",
+                "coords": [0,0]
+            }
+        ],
+        "points_count": 4,
+        "optimum_point": "C",
+        "optimum_value": 10
+    },
+    "has_multiple_solution": false,
+    "multiple_solution": {},
+    "status": 0,
+    "ellapsed_time": 0,
+    "error_msg": ""
+}

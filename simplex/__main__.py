@@ -1,8 +1,7 @@
 import json
 import os
 import time
-
-from core import primal_simplex
+import primal_tabular
 
 #The main function receives a Json Object containg all inputs and configurations
 def main(json_string):
@@ -18,8 +17,12 @@ def main(json_string):
     }
     try:
         match configs["method"]:
-            case "PRIMAL":
-                primal_simplex.run(configs)
+            case "PRIMAL_GRAPHIC":
+                primal_tabular.run(configs)
+            case "PRIMAL_TABULAR":
+                primal_tabular.run(configs)
+            case "DUAL":
+                primal_tabular.run(configs)
             case _:
                 output["error_msg"] = "Método inválido."
                 output["status"] = -1
@@ -31,6 +34,8 @@ def main(json_string):
     return json.dumps(output)
 
 if __name__ == "__main__":
-    input_sample = open("C:/Users/mateu/OneDrive/Escola/Pesquisa Operacional/Algoritmo-simplex/tests/input_sample.json", "r")
+    script_dir = os.path.dirname(__file__).replace("simplex\\","") #<-- absolute dir the script is in
+    rel_path = "examples\input_sample.json"
+    input_sample = open(os.path.join(script_dir, rel_path), "r")
     main(input_sample.read())
     os.system("PAUSE")
