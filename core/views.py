@@ -10,12 +10,6 @@ from urllib.parse import unquote
 
 
 # Create your views here.
-
-
-def home(request):
-    return render(request, 'index.html')
-
-
 def first_step(request):
     if request.method == 'POST':
         request.session['algMethod'] = request.POST['method']
@@ -76,9 +70,6 @@ def third_step(request):
         "objective_function": funcObj,
         "restrictions": restrictions,
     }
-
     requestJson = json.dumps(requestJson)
-
-    pdb.set_trace()
 
     return render(request, 'resultado.html')

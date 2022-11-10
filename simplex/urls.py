@@ -19,8 +19,7 @@ import core.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', core.views.home),
-    path('first-step', core.views.first_step),
+    path('', core.views.first_step),
     path('second-step', core.views.second_step),
     path('result',  core.views.third_step)
 ]
