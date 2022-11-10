@@ -36,25 +36,49 @@ def get_chart():
 def get_area(restr, numVar):
     util_area = []
     for value in restr:
-        pieces = value.split('<=')
-        res = '-' + pieces[1]
-        pieces = pieces[0].split('+')
-        pieces.append(res)
-        coeficients = []
-        for piece in pieces:
-            if not piece.strip():
-                continue
+        if '<=' in value:
+            pieces = value.split('<=')
+            res = '-' + pieces[1]
+            pieces = pieces[0].split('+')
+            pieces.append(res)
+            coeficients = []
+            for piece in pieces:
+                if not piece.strip():
+                    continue
 
-            coef = piece.strip().split('x')[0]
-            if coef == '':
-                coef = 1
-            elif coef == '-':
-                coef = -1
-            else:
-                coef = int(coef)
-            coeficients.append(coef)
+                coef = piece.strip().split('x')[0]
+                if coef == '':
+                    coef = 1
+                elif coef == '-':
+                    coef = -1
+                else:
+                    coef = int(coef)
+                coeficients.append(coef)
 
-        util_area.append(coeficients)
+            util_area.append(coeficients)
+        else:
+            pieces = value.split('>=')
+            res = pieces[1]
+            pieces = pieces[0].split('+')
+            pieces.append(res)
+            coeficients = []
+            for piece in pieces:
+                if not piece.strip():
+                    continue
+                if 'x' in coef:
+                    coef = '-' + piece.strip().split('x')[0]
+                else:
+                    coef = piece.strip().split('x')[0]
+                if coef == '':
+                    coef = 1
+                elif coef == '-':
+                    coef = -1
+                else:
+                    coef = int(coef)
+                coeficients.append(coef)
+
+            util_area.append(coeficients)
+
 
     for i in range(numVar):
         line = list(np.zeros(numVar + 1))
@@ -88,3 +112,21 @@ def render_inequalities(halfspaces, feasible_point, xlim, ylim):
     chart = get_graph()
 
     return chart
+
+
+def treat_restrictions(restrictions, num_variables):
+    restrictions_list = []
+
+    current_restriction = []
+    for i in range(0, len(restrictions)):
+        current_restriction.append(restrictions[i])
+        if len(current_restriction) == num_variables + 2:
+            restrictions_list.append({
+                "coeficients": [int(val) for val in current_restriction[:-2]],
+                "type": current_restriction[-2],
+                "value": int(current_restriction[-1])
+            })
+
+            current_restriction = []
+
+    return restrictions_list

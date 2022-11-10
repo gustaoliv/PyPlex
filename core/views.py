@@ -17,9 +17,10 @@ def home(request):
 
 def first_step(request):
     if request.method == 'POST':
-        numVar = request.POST['numVar']
-        numRest = request.POST['numRest']
-        return redirect(f'/second-step?numVar={numVar}?numRest={numRest}')
+        request.session['algMethod'] = request.POST['method']
+        request.session['numVar'] = request.POST['numVar']
+        request.session['numRest'] = request.POST['numRest']
+        return redirect('/second-step')
     else:
         form = FirstStepForm()
         return render(request, 'formulario.html', {'form': form})
@@ -27,40 +28,54 @@ def first_step(request):
 
 def second_step(request):
     if request.method == 'POST':
-        baseurl = str(request.build_absolute_uri())
-        values = baseurl.split('?')
-        numVar = int(values[1].split('=')[1])
-        numRest = int(values[2].split('=')[1])
-        url = f'/result?numVar={numVar}'
-        for i in range(0, numRest):
-            url += '?' + request.POST[f'restricao {i}']
-        print(url)
+        numVar = int(request.session['numVar'])
+        numRest = int(request.session['numRest'])
+        url = '/result'
+
+        request.session['objective'] = request.POST['objective']
+
+        for i in range(numVar):
+            request.session[f'x{i}'] = request.POST[f'x{i}']
+
+        for i in range(numRest):
+            for j in range(numVar + 2):
+                request.session[f'a{i}{j}'] = request.POST[f'a{i}{j}']
+
         return redirect(url)
     else:
-        baseurl = str(request.build_absolute_uri())
-        values = baseurl.split('?')
-        numVar = int(values[1].split('=')[1])
-        numRest = int(values[2].split('=')[1])
-        form = SecondStepForm(numRest)
-        return render(request, 'formulario2.html', {'form': form})
+        numVar = int(request.session['numVar'])
+        numRest = int(request.session['numRest'])
+        form = SecondStepForm(numVar, numRest)
+
+        return render(request, 'formulario2.html', {'form': form, 'numVar': range(numVar + 2), 'numRest': range(numRest)
+                      , 'classCol': f'col-sm-{int(10 / (numVar + 1))}', 'sliceRest': f'{1+numVar}:'
+                      , 'sliceObjet': f'1:{numVar + 1}'})
 
 
 def third_step(request):
-    baseurl = unquote(str(request.build_absolute_uri()))
-    values = baseurl.split('?')
-    # chart = get_chart()
 
-    numVar = int(values[1].split('=')[1])
-    restr = values[2:]
-    util_area = get_area(restr, numVar)
+    restr = []
+    funcObj = []
+    for k, v in request.session.items():
+        if k == 'numVar' or k == 'numRest' or k == 'algMethod' or k == 'objective':
+            continue
 
-    feasible_point = np.array([0.5, 0.5])
-    # xmin = min(util_area[:][0])
-    # ymin = min(util_area[:][1])
-    xlim = (-1, 5)
-    area_chart = render_inequalities(util_area, feasible_point, xlim, xlim)
-    context = {
-        'chart': area_chart
+        if 'a' in str(k):
+            restr.append(v)
+        else:
+            funcObj.append(v)
+
+    #pdb.set_trace()
+
+    restrictions = treat_restrictions(restr, int(request.session["numVar"]))
+
+    requestJson = {
+        "method": request.session["algMethod"],
+        "objective": request.session["objective"],
+        "objective_function": funcObj,
+        "restrictions": restrictions,
     }
 
-    return render(request, 'resultado.html', context)
+    pdb.set_trace()
+
+    return render(request, 'resultado.html')
