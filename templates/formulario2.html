@@ -44,11 +44,7 @@
 
                     <div class="row">
                         {{ field }}
-                        {% if field.label == "dontShow" or field.label == "signal" %}
-                            <label style="visibility: hidden">_</label>
-                        {% else %}
-                            <label>{{ field.label }}</label>
-                        {% endif %}
+                        <label>{{ field.label }}</label>
                     </div>
                 </div>
 
@@ -65,7 +61,7 @@
 
                 <div class="col-sm-3">
 
-                    <div class="row">
+                    <div>
                         {{ field }}
                         {% if field.label == "dontShow" or field.label == "signal" %}
                             <label style="visibility: hidden">_</label>

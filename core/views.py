@@ -1,3 +1,4 @@
+import json
 from ctypes import util
 from django.shortcuts import render
 from django import forms
@@ -22,6 +23,8 @@ def first_step(request):
         request.session['numRest'] = request.POST['numRest']
         return redirect('/second-step')
     else:
+        for key in list(request.session.keys()):
+            del request.session[key]
         form = FirstStepForm()
         return render(request, 'formulario.html', {'form': form})
 
@@ -47,7 +50,7 @@ def second_step(request):
         numRest = int(request.session['numRest'])
         form = SecondStepForm(numVar, numRest)
 
-        return render(request, 'formulario2.html', {'form': form, 'numVar': range(numVar + 2), 'numRest': range(numRest)
+        return render(request, 'formulario2.html', {'form': form, 'numVar': range(numVar), 'numRest': range(numRest)
                       , 'classCol': f'col-sm-{int(10 / (numVar + 1))}', 'sliceRest': f'{1+numVar}:'
                       , 'sliceObjet': f'1:{numVar + 1}'})
 
@@ -63,10 +66,7 @@ def third_step(request):
         if 'a' in str(k):
             restr.append(v)
         else:
-
-            funcObj.append(v)
-
-    #pdb.set_trace()
+            funcObj.append(int(v))
 
     restrictions = treat_restrictions(restr, int(request.session["numVar"]))
 
@@ -76,6 +76,8 @@ def third_step(request):
         "objective_function": funcObj,
         "restrictions": restrictions,
     }
+
+    requestJson = json.dumps(requestJson)
 
     pdb.set_trace()
 

@@ -1,3 +1,5 @@
+import pdb
+
 from django import forms
 
 
@@ -23,14 +25,14 @@ class SecondStepForm(forms.Form):
         for i in range(numVar):
             self.fields[f'x{i}'] = forms.IntegerField(initial=0, label=f'x{i + 1}')
 
-
         #restrictions
         for i in range(numRest):
             for j in range(numVar + 2):
                 if j == numVar:
-                    choices = [('>=', '>='), ('<=', '<='), ('=', '=')]
+                    choices = [('<=', '<='), ('=', '='), ('>=', '>=')]
                     self.fields[f'a{i}{j}'] = forms.ChoiceField(choices=choices, label='signal')
                 elif j < numVar:
                     self.fields[f'a{i}{j}'] = forms.IntegerField(initial=0, label=f'x{j+1}')
                 else:
                     self.fields[f'a{i}{j}'] = forms.IntegerField(initial=0, label=f'dontShow')
+
