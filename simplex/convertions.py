@@ -25,10 +25,16 @@ def extended_problem(input = []):
                 adicional_vars+=2
 
     #Update the restriction coeficients
+    length = len(ref[0]["coeficients"])
     for i in range(0, len(output)):
         output[i]["coeficients"] = output[i]["coeficients"].__add__(np.zeros(adicional_vars).tolist())
     
-    length = len(ref[0]["coeficients"])
+    total_length = length + adicional_vars
+    for i in range(length, total_length):
+        c = np.zeros(total_length)
+        c[i] = 1
+        output.append({"coeficients": c, "type":">=", "value": 0})
+
     pos = length
     for restriction in ref:
         c = restriction["coeficients"]

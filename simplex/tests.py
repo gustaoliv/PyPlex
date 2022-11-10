@@ -43,3 +43,7 @@ print("")
 print("viability_region test: ")
 print(graphic_methods.viability_region(input))
 print("")
+
+print("viability_region in extended_problem test: ")
+print(graphic_methods.viability_region(convertions.extended_problem(input)))
+print("")

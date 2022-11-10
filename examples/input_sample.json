@@ -1,5 +1,5 @@
 {
-    "method": "PRIMAL",
+    "method": "ALGEBRIC",
     "objective": "MAXIMIZE",
     "objective_function": [3, 2],
     "restrictions": [
@@ -24,5 +24,6 @@
             "value": 0
         }
     ],
-    "variable_names": ["x1", "x2"]
+    "variable_names": ["x1", "x2"],
+    "integer_solution": false
 }
