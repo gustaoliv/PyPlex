@@ -63,6 +63,7 @@ def third_step(request):
         if 'a' in str(k):
             restr.append(v)
         else:
+
             funcObj.append(v)
 
     #pdb.set_trace()
