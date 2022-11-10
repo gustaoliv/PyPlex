@@ -1,97 +1,70 @@
-<div align="center" id="top"> 
-  <img src="./.github/app.gif" alt="Trabalho Final" />
-
-  &#xa0;
-
-  <!-- <a href="https://trabalhofinal.netlify.com">Demo</a> -->
-</div>
-
 <h1 align="center">Trabalho Final</h1>
 
-<p align="center">
-  <img alt="Principal linguagem do projeto" src="https://img.shields.io/github/languages/top/{{YOUR_GITHUB_USERNAME}}/trabalho-final?color=56BEB8">
 
-  <img alt="Quantidade de linguagens utilizadas" src="https://img.shields.io/github/languages/count/{{YOUR_GITHUB_USERNAME}}/trabalho-final?color=56BEB8">
-
-  <img alt="Tamanho do repositório" src="https://img.shields.io/github/repo-size/{{YOUR_GITHUB_USERNAME}}/trabalho-final?color=56BEB8">
-
-  <img alt="Licença" src="https://img.shields.io/github/license/{{YOUR_GITHUB_USERNAME}}/trabalho-final?color=56BEB8">
-
-  <!-- <img alt="Github issues" src="https://img.shields.io/github/issues/{{YOUR_GITHUB_USERNAME}}/trabalho-final?color=56BEB8" /> -->
-
-  <!-- <img alt="Github forks" src="https://img.shields.io/github/forks/{{YOUR_GITHUB_USERNAME}}/trabalho-final?color=56BEB8" /> -->
-
-  <!-- <img alt="Github stars" src="https://img.shields.io/github/stars/{{YOUR_GITHUB_USERNAME}}/trabalho-final?color=56BEB8" /> -->
-</p>
 
 <!-- Status -->
 
-<!-- <h4 align="center"> 
-	🚧  Trabalho Final 🚀 Em construção...  🚧
+<h4 align="center"> 
+	🚧  Em construção...  🚧
 </h4> 
 
-<hr> -->
+<hr>
 
 <p align="center">
   <a href="#dart-sobre">Sobre</a> &#xa0; | &#xa0; 
-  <a href="#sparkles-funcionalidades">Funcionalidades</a> &#xa0; | &#xa0;
   <a href="#rocket-tecnologias">Tecnologias</a> &#xa0; | &#xa0;
   <a href="#white_check_mark-pré-requisitos">Pré requisitos</a> &#xa0; | &#xa0;
   <a href="#checkered_flag-começando">Começando</a> &#xa0; | &#xa0;
-  <a href="#memo-licença">Licença</a> &#xa0; | &#xa0;
-  <a href="https://github.com/{{YOUR_GITHUB_USERNAME}}" target="_blank">Autor</a>
+  <a href="https://github.com/gustaoliv" target="_blank">Autor</a>
 </p>
 
 <br>
 
 ## :dart: Sobre ##
 
-Sobre o seu projeto
+Aplicação Back-end desenvolvida em Django para o trabalho final da disciplina de Pesquisa Operacional.
 
-## :sparkles: Funcionalidades ##
-
-:heavy_check_mark: Funcionalidade 1;\
-:heavy_check_mark: Funcionalidade 2;\
-:heavy_check_mark: Funcionalidade 3;
 
 ## :rocket: Tecnologias ##
 
 As seguintes ferramentas foram usadas na construção do projeto:
 
-- [Expo](https://expo.io/)
-- [Node.js](https://nodejs.org/en/)
-- [React](https://pt-br.reactjs.org/)
-- [React Native](https://reactnative.dev/)
-- [TypeScript](https://www.typescriptlang.org/)
+- [Django](https://www.djangoproject.com/)
+
 
 ## :white_check_mark: Pré requisitos ##
 
-Antes de começar :checkered_flag:, você precisa ter o [Git](https://git-scm.com) e o [Node](https://nodejs.org/en/) instalados em sua maquina.
+Antes de começar :checkered_flag:, você precisa ter o [Git](https://git-scm.com) e o [Python](https://www.python.org/) instalados em sua maquina.
 
 ## :checkered_flag: Começando ##
 
 ```bash
 # Clone este repositório
-$ git clone https://github.com/{{YOUR_GITHUB_USERNAME}}/trabalho-final
+$ git clone https://github.com/gustaoliv/BackEnd-Simplex
 
 # Entre na pasta
-$ cd trabalho-final
+$ cd BackEnd-Simplex
+
+# Crie um arquivo .env na raiz do projeto com as informações
+$ SECRET_KEY=COLOQUE AQUI UMA SECRET DJANGO
+$ DEBUG=TRUE
+
+# Inicie uma virtual env
+$ python -m venv venv
+$ ./venv/Scripts/activate
 
 # Instale as dependências
-$ yarn
+$ pip install -r requirements.txt
 
 # Para iniciar o projeto
-$ yarn start
+$ python manage.py runserver
 
-# O app vai inicializar em <http://localhost:3000>
+# O app vai inicializar em <http://localhost:8000>
 ```
 
 ## :memo: Licença ##
 
-Este projeto está sob licença MIT. Veja o arquivo [LICENSE](LICENSE.md) para mais detalhes.
-
-
-Feito com :heart: por <a href="https://github.com/{{YOUR_GITHUB_USERNAME}}" target="_blank">{{YOUR_NAME}}</a>
+Feito por <a href="https://github.com/gustaoliv" target="_blank">gustaoliv</a>
 
 &#xa0;
 
