@@ -9,11 +9,11 @@ class FirstStepForm(forms.Form):
     EXIBITION_TYPE_CHOICES = [('GRAFICA', 'Gráfica'),
                               ('TABULAR', 'Tabular')]
 
-    exibition_type = forms.ChoiceField(choices=EXIBITION_TYPE_CHOICES, widget=forms.RadioSelect, label='Tipo')
-    method = forms.ChoiceField(choices=METHOD_CHOICES, widget=forms.RadioSelect, label='Método')
-    numVar = forms.IntegerField(label='Número de variáveis')
-    numRest = forms.IntegerField(label='Número de restrições')
-    integer_solution = forms.BooleanField(label="Utilizar solução inteira", required=False)
+    exibition_type = forms.ChoiceField(choices=EXIBITION_TYPE_CHOICES, widget=forms.RadioSelect(attrs={'class':'form-check-input'}), label='Tipo')
+    method = forms.ChoiceField(choices=METHOD_CHOICES, widget=forms.RadioSelect(attrs={'class':'form-check-input'}), label='Método')
+    numVar = forms.IntegerField(label='Número de variáveis', widget=forms.NumberInput(attrs={'class':'form-control'}))
+    numRest = forms.IntegerField(label='Número de restrições', widget=forms.NumberInput(attrs={'class':'form-control'}))
+    integer_solution = forms.BooleanField(label="Utilizar solução inteira", required=False, widget=forms.CheckboxInput(attrs={'class':'form-check-input'}))
     sucess_url = '/second-step'
 
 
