@@ -3,6 +3,7 @@ from django.shortcuts import render
 from .forms import *
 from .utils import *
 from django.shortcuts import redirect
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -13,8 +14,8 @@ def first_step(request):
         request.session['numRest'] = request.POST['numRest']
         return redirect('/second-step')
     else:
-        for key in list(request.session.keys()):
-            del request.session[key]
+        request.session.flush()
+
         form = FirstStepForm()
         return render(request, 'formulario.html', {'form': form})
 
@@ -66,6 +67,7 @@ def third_step(request):
         "objective_function": funcObj,
         "restrictions": restrictions,
     }
-    requestJson = json.dumps(requestJson)
+    #requestJson = json.dumps(requestJson)
 
-    return render(request, 'resultado.html')
+    #return render(request, 'resultado.html')
+    return JsonResponse(requestJson)
