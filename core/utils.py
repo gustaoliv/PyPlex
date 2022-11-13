@@ -129,4 +129,14 @@ def treat_restrictions(restrictions, num_variables):
 
             current_restriction = []
 
+    for i in range(int(num_variables)):
+        current_restriction = list(range(int(num_variables)))
+        current_restriction = [x * 0 for x in current_restriction]
+        current_restriction[i] = 1
+        restrictions_list.append({
+            "coeficients": current_restriction,
+            "type": ">=",
+            "value": 0
+        })
+
     return restrictions_list

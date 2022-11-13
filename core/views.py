@@ -1,18 +1,14 @@
 import json
-from ctypes import util
 from django.shortcuts import render
-from django import forms
 from .forms import *
 from .utils import *
 from django.shortcuts import redirect
-from django.http import HttpResponseRedirect
-from urllib.parse import unquote
 
 
 # Create your views here.
 def first_step(request):
     if request.method == 'POST':
-        request.session['algMethod'] = request.POST['method']
+        request.session['method'] = request.POST['method']
         request.session['numVar'] = request.POST['numVar']
         request.session['numRest'] = request.POST['numRest']
         return redirect('/second-step')
@@ -54,7 +50,7 @@ def third_step(request):
     restr = []
     funcObj = []
     for k, v in request.session.items():
-        if k == 'numVar' or k == 'numRest' or k == 'algMethod' or k == 'objective':
+        if k == 'numVar' or k == 'numRest' or k == 'method' or k == 'objective':
             continue
 
         if 'a' in str(k):
@@ -65,7 +61,7 @@ def third_step(request):
     restrictions = treat_restrictions(restr, int(request.session["numVar"]))
 
     requestJson = {
-        "method": request.session["algMethod"],
+        "method": request.session["method"],
         "objective": request.session["objective"],
         "objective_function": funcObj,
         "restrictions": restrictions,
