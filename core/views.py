@@ -9,9 +9,12 @@ from django.http import JsonResponse
 # Create your views here.
 def first_step(request):
     if request.method == 'POST':
-        request.session['method'] = request.POST['method']
-        request.session['numVar'] = request.POST['numVar']
-        request.session['numRest'] = request.POST['numRest']
+        pdb.set_trace()
+
+        for key in request.POST.keys():
+            if key == 'csrfmiddlewaretoken':
+                continue
+            request.session[key] = request.POST[key]
         return redirect('/second-step')
     else:
         request.session.flush()

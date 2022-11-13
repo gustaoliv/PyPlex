@@ -4,13 +4,16 @@ from django import forms
 
 
 class FirstStepForm(forms.Form):
-    METHOD_CHOICES = [('PRIMAL', 'PRIMAL'),
-                      ('DUAL', 'DUAL'),
-                      ('GRAFICO', 'GRAFICO')]
+    METHOD_CHOICES = [('PRIMAL', 'Primal'),
+                      ('DUAL', 'Dual')]
+    EXIBITION_TYPE_CHOICES = [('GRAFICA', 'Gráfica'),
+                              ('TABULAR', 'Tabular')]
 
+    exibition_type = forms.ChoiceField(choices=EXIBITION_TYPE_CHOICES, widget=forms.RadioSelect, label='Tipo')
     method = forms.ChoiceField(choices=METHOD_CHOICES, widget=forms.RadioSelect, label='Método')
     numVar = forms.IntegerField(label='Número de variáveis')
     numRest = forms.IntegerField(label='Número de restrições')
+    integer_solution = forms.BooleanField(label="Utilizar solução inteira", required=False)
     sucess_url = '/second-step'
 
 
