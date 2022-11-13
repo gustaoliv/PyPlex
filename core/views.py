@@ -9,8 +9,6 @@ from django.http import JsonResponse
 # Create your views here.
 def first_step(request):
     if request.method == 'POST':
-        pdb.set_trace()
-
         for key in request.POST.keys():
             if key == 'csrfmiddlewaretoken':
                 continue
@@ -74,3 +72,6 @@ def third_step(request):
 
     #return render(request, 'resultado.html')
     return JsonResponse(requestJson)
+
+
+# https://getbootstrap.com/docs/4.3/components/forms/

@@ -22,19 +22,22 @@ class SecondStepForm(forms.Form):
         super(SecondStepForm, self).__init__(*args, **kwargs)
 
         # objetive function
-        OBJECTIVE_CHOICES = [('MAXIMIZE', 'MAXIMIZE'), ('MINIMIZE', 'MINIMIZE')]
-        self.fields['objective'] = forms.ChoiceField(choices=OBJECTIVE_CHOICES, label='objective')
+        OBJECTIVE_CHOICES = [('MAXIMIZE', 'Maximizar'), ('MINIMIZE', 'Minimizar')]
+        self.fields['objective'] = forms.ChoiceField(choices=OBJECTIVE_CHOICES, label='objective', widget=forms.Select(attrs={'class':'form-control'}))
 
         for i in range(numVar):
-            self.fields[f'x{i}'] = forms.IntegerField(initial=0, label=f'x{i + 1}')
+            self.fields[f'x{i}'] = forms.CharField(initial=0, label=f'x{i + 1}', widget=forms.NumberInput(attrs={'class':'form-control'}))
 
         # restrictions
         for i in range(numRest):
             for j in range(numVar + 2):
                 if j == numVar:
                     choices = [('<=', '<='), ('=', '='), ('>=', '>=')]
-                    self.fields[f'a{i}{j}'] = forms.ChoiceField(choices=choices, label='signal')
+                    self.fields[f'a{i}{j}'] = forms.ChoiceField(choices=choices, label='signal', widget=forms.Select(attrs={'class':'form-control'}))
                 elif j < numVar:
-                    self.fields[f'a{i}{j}'] = forms.IntegerField(initial=0, label=f'x{j + 1}')
+                    if j != (numVar - 1):
+                        self.fields[f'a{i}{j}'] = forms.CharField(initial=0, label=f'x{j + 1} + ', widget=forms.NumberInput(attrs={'class':'form-control'}))
+                    else:
+                        self.fields[f'a{i}{j}'] = forms.CharField(initial=0, label=f'x{j + 1}', widget=forms.NumberInput(attrs={'class':'form-control'}))
                 else:
-                    self.fields[f'a{i}{j}'] = forms.IntegerField(initial=0, label=f'dontShow')
+                    self.fields[f'a{i}{j}'] = forms.CharField(initial=0, label=f'dontShow', widget=forms.NumberInput(attrs={'class':'form-control'}))
