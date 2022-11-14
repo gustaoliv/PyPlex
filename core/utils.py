@@ -140,3 +140,30 @@ def treat_restrictions(restrictions, num_variables):
         })
 
     return restrictions_list
+
+
+def make_json(session_dict):
+    restr = []
+    funcObj = []
+    for k, v in session_dict.items():
+        if k == 'numVar' or k == 'numRest' or k == 'method' or k == 'objective' or k == "exibition_type" or k == 'integer_solution':
+            continue
+
+        if 'a' in str(k):
+            restr.append(v)
+        else:
+            funcObj.append(int(v))
+
+    restrictions = treat_restrictions(restr, int(session_dict["numVar"]))
+
+    requestJson = {
+        "method": session_dict["method"],
+        "objective": session_dict["objective"],
+        "objective_function": funcObj,
+        "restrictions": restrictions,
+    }
+
+    if "integer_solution" in session_dict.keys():
+        requestJson["integerSolution"] = session_dict["integer_solution"] == 'on'
+
+    return requestJson

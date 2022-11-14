@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <br><br><br><br>
+    <div class="container">
+        <h1>Resultado Tabular</h1>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    {% for header in headers %}
+                    <th scope="col">{{header}}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+        <tbody>
+            {% for iterat in table_values %}
+                {% for line in iterat %}
+
+                <tr>
+                    {% for value in line %}
+                    <td>{{value}}</td>
+                    {% endfor %}
+                </tr>
+
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+        </table>
+
+    </div>
+
+
+</div>
+
+{% endblock %}

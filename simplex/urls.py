@@ -21,5 +21,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', core.views.first_step),
     path('second-step', core.views.second_step),
-    path('result',  core.views.third_step)
+    path('result',  core.views.third_step),
+    path('get_chart_data', core.views.get_chart_data, name='get_chart_data'),
+    path('tabular', core.views.tabular_view),
+    path('grafica', core.views.graphic_view)
 ]
