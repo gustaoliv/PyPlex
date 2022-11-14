@@ -1,4 +1,6 @@
 import json
+import pdb
+
 from django.shortcuts import render
 from .forms import *
 from .utils import *
@@ -48,11 +50,10 @@ def second_step(request):
 
 
 def third_step(request):
-
     restr = []
     funcObj = []
     for k, v in request.session.items():
-        if k == 'numVar' or k == 'numRest' or k == 'method' or k == 'objective':
+        if k == 'numVar' or k == 'numRest' or k == 'method' or k == 'objective' or k == "exibition_type" or k == 'integer_solution':
             continue
 
         if 'a' in str(k):
@@ -68,6 +69,10 @@ def third_step(request):
         "objective_function": funcObj,
         "restrictions": restrictions,
     }
+
+    if "integer_solution" in request.session.keys():
+        requestJson["integerSolution"] = request.session["integer_solution"] == 'on'
+
     #requestJson = json.dumps(requestJson)
 
     #return render(request, 'resultado.html')
