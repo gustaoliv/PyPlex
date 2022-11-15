@@ -16,7 +16,7 @@ def viability_region(restrictions):
     for r in restrictions:
         r["coeficients"] = list(map(lambda a : float('inf') if a == 'M' else a, r["coeficients"]))
     
-    #The first thing to do is to combine the restrictions in a way that is could be solved later
+    #The first thing to do is to combine the restrictions in a way that it can be solved later
     combinations = itertools.combinations(restrictions, num_of_coeficients)
     
     #Then we iterate over each combination, trying to solve it and get the intersection point
@@ -39,7 +39,7 @@ def viability_region(restrictions):
             continue
     
     #Verify if the points meets all the restrictions
-    print(restrictions)
+    #print(restrictions)
     viable_points = []
     for i in range(0, points_count):
         p = points[i]
@@ -63,10 +63,14 @@ def viability_region(restrictions):
         If we have just 2 variables and more then 2 points, we can have a surface.
         And if the problem have more then 2 variable, the result may be the edges of a multidimencional object.
     """
-    insert_points_label(viable_points)
-    return viable_points
+    start_point = insert_points_label(viable_points)
+    link_points(viable_points)
+    return (viable_points, start_point)
 
 def start_point(points):
+    if len(points) == 0:
+        return -1
+    
     s = points[0]
     l = len(s["coords"])
     for i in range(1,len(points)):
@@ -99,3 +103,43 @@ def insert_points_label(points):
                     break
     
     points.extend(points_with_label)
+    return s
+
+def link_points(points):
+    for p1 in points:
+        p1["siblings"] = []
+        for p2 in points:
+            if p1 == p2:
+                continue
+            for r in p1["restrictions"]:
+                if p2["restrictions"].__contains__(r):
+                    p1["siblings"].append(p2)
+                    break
+
+def get_priority_list(list):
+    #Basically, is just ordanate the list and store the index
+    priorities = []
+
+    ref = list.copy()
+    l = len(ref)
+    for i in range(0, l):
+        index = -1
+        max = -float("inf")
+        for j in range(0, l):
+            if priorities.__contains__(j):
+                continue
+            if ref[j] > max:
+                index = j
+                max = ref[index]
+        priorities.append(index)
+    
+    return priorities
+
+def have_priority(p1, p2, priority_list):
+    for i in priority_list:
+        if(p1["coords"][i] > p2["coords"][i]):
+            return True
+    return False
+
+def calc_point_value(point, function):
+    return np.dot(np.array(point["coords"]), np.array(function))
