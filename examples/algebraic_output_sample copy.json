@@ -4,6 +4,10 @@
         "optimum_value": 10,
         "iterations": [
             {
+                "z": {
+                    "coeficients": [ 0, 0, 0, 0],
+                    "value": 0
+                },
                 "expressions": [
                     {
                         "coeficients": [ -3, -2, 0, 0],
@@ -26,6 +30,10 @@
                 "is_optimum": false
             },
             {
+                "z": {
+                    "coeficients": [ 0, 0, 0, 0],
+                    "value": 0
+                },
                 "expressions": [
                     {
                         "coeficients": [0, -0.5, 1.5, 0],
@@ -48,6 +56,10 @@
                 "is_optimum": false
             },
             {
+                "z": {
+                    "coeficients": [ 0, 0, 0, 0],
+                    "value": 0
+                },
                 "expressions": [
                     {
                         "coeficients": [0, 0, 1.33, 0.33],
@@ -69,13 +81,14 @@
             }
         ],
         "iterations_count": 3,
+        "variables": ["x1","x2","sx3","sx4"],
         "input_variables": ["x1","x2"],
         "slack_variables": ["sx3","sx4"],
         "virtual_variables": []
     },
     "multiple_solutions": [
         {
-            "objective_function": [2, 5, 1],
+            "z": [2, 5, 1],
             "optimum_point": [],
             "optimum_value": 0,
             "restrictions": [

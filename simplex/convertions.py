@@ -1,14 +1,15 @@
 import numpy as np
 
-def extended_problem(input = []):
-    if len(input) < 3:
+def extended_problem(configs = {}):
+    restrictions = configs["restrictions"]
+    if len(restrictions) < 3:
         return None
 
     ref = []
     output = []
     #Separe inferior limit and normal restrictions
-    for i in range(0, len(input)):
-        r = input[i]
+    for i in range(0, len(restrictions)):
+        r = restrictions[i]
         if is_inferior_limit_restriction(r):
             output.append(r.copy())
         else:
@@ -62,7 +63,7 @@ def normalize_restriction(restriction, ref_index):
     r["value"] /= ref_value
     return r
 
-def primal_to_dual(input):
+def primal_to_dual(configs = {}):
     output = []
     return output
 
