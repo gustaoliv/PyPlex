@@ -23,6 +23,8 @@ def run(configs, output):
     
     iterations = []
     #Write initial state
+
+    
     num_vars = 0
     last_iteration = {}
     while True:

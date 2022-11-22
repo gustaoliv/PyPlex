@@ -5,7 +5,7 @@ import graphic_methods as gm
 
 #The simplex_primal function receives an Object containg all inputs and configurations
 def run(configs, output):
-    (viable_region, start_point) = gm.viability_region(configs["restrictions"])
+    (viable_region, start_point) = gm.viability_region(configs)
     if len(viable_region) == 0:
         output["status"] = -1
         output["error_msg"] = "There is no viable points"
@@ -32,7 +32,7 @@ def run(configs, output):
             if "value" not in p:
                 p["value"] = gm.calc_point_value(p, obj_f)
 
-            if p["value"] > next["value"]:
+            if p["value"] >= next["value"]:
                 next = p
         if next == target_point:
             break
@@ -40,6 +40,12 @@ def run(configs, output):
         target_point = next
     
     optimum_point = target_point
+
+    #Check for multiple solutions
+    multiple_solutions = []
+    for p in visited_points:
+        if p != optimum_point and p["value"] == optimum_point["value"]:
+            multiple_solutions.append(p["label"])
 
     #Generate output data
     result = {
@@ -50,15 +56,18 @@ def run(configs, output):
         "points_count": 0,
         "optimum_point": "",
         "optimum_value": 0,
-        "has_multiple_solution": False,
-        "multiple_solution": {}
+        "has_multiple_solution": len(multiple_solutions) > 0,
+        "multiple_solutions": multiple_solutions
     }
     visited_points.reverse()
     for p in visited_points:
         result["iterations_path"].append(p["label"])
     
     result["iterations_count"] = len(result["iterations_path"])
-    result["variables"] = configs["variable_names"]
+    if configs.keys().__contains__("extended_problem"):
+        result["variables"] = configs["variable_names_extended"]
+    else:
+        result["variables"] = configs["variable_names"]
     
     for p in viable_region:
         if not "value" in p:

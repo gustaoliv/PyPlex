@@ -1,56 +1,68 @@
 import numpy as np
 
 def extended_problem(configs = {}):
-    restrictions = configs["restrictions"]
-    if len(restrictions) < 3:
+    output = configs.copy()
+
+    if len(output["restrictions"]) < 3:
         return None
 
     ref = []
-    output = []
+    res = []
     #Separe inferior limit and normal restrictions
-    for i in range(0, len(restrictions)):
-        r = restrictions[i]
+    for r in output["restrictions"]:
         if is_inferior_limit_restriction(r):
-            output.append(r.copy())
+            new_r = r.copy()
+            new_r["is_lower_bound_restriction"] = True
+            res.append(new_r)
         else:
             ref.append(r.copy())
     
     #Count the number of adicional variables
-    adicional_vars = 0
+    slack_vars = 0
+    virtual_vars = 0
     for restriction in ref:
         c = restriction["coeficients"]
-        match(restriction["type"]):
-            case "<=":
-                adicional_vars+=1
-            case ">=":
-                adicional_vars+=2
+        slack_vars+=1
+        if restriction["type"] == ">=": virtual_vars+=1
+
+    adicional_vars = slack_vars + virtual_vars
 
     #Update the restriction coeficients
     length = len(ref[0]["coeficients"])
-    for i in range(0, len(output)):
-        output[i]["coeficients"] = output[i]["coeficients"].__add__(np.zeros(adicional_vars).tolist())
+    for r in res:
+        r["coeficients"] = r["coeficients"].__add__(np.zeros(adicional_vars).tolist())
     
+    #Update the objective function coeficients
+    output["objective_function"] = output["objective_function"].copy().__add__(np.zeros(adicional_vars).tolist())
+
+    #Insert new inferior limits
     total_length = length + adicional_vars
     for i in range(length, total_length):
         c = np.zeros(total_length)
         c[i] = 1
-        output.append({"coeficients": c, "type":">=", "value": 0})
+        res.append({"coeficients": c, "type":">=", "value": 0, "is_lower_bound_restriction": True})
 
-    pos = length
-    for restriction in ref:
-        c = restriction["coeficients"]
-        new_c = c.__add__(np.zeros(adicional_vars).tolist())
+    s_names = []
+    a_names = []
+    s_pos = length
+    a_pos = length + slack_vars
+    for r in ref:
+        c = r["coeficients"].__add__(np.zeros(adicional_vars).tolist())
 
-        match(restriction["type"]):
-            case "<=":
-                new_c[pos] = 1
-                pos+=1
-            case ">=":
-                new_c[pos] = 1
-                new_c[pos+1] = "M"
-                pos+=2
+        c[s_pos] = 1
+        s_pos+=1
+        s_names.append("sx"+s_pos.__str__())
 
-        output.append({"coeficients": new_c, "type":"=", "value": restriction["value"]})
+        if r["type"] == ">=":
+            c[a_pos+1] = "M"
+            a_pos+=1
+            a_names.append("ax"+a_pos.__str__())
+
+        res.append({"coeficients": c, "type":"=", "value": r["value"]})
+    
+    output["variable_names_extended"] = output["variable_names"] + s_names + a_names
+    output["restrictions"] = res
+    output["extended_problem"] = True
     
     return output
 

@@ -2,7 +2,8 @@ import numpy as np
 import itertools
 
 #This function must get all the restriction intercections and compose a list with the label and coordenades
-def viability_region(restrictions):
+def viability_region(configs):
+    restrictions = configs["restrictions"]
     num_of_restrictions = len(restrictions)
     if num_of_restrictions == 0:
         return None
@@ -63,34 +64,46 @@ def viability_region(restrictions):
         If we have just 2 variables and more then 2 points, we can have a surface.
         And if the problem have more then 2 variable, the result may be the edges of a multidimencional object.
     """
-    start_point = insert_points_label(viable_points)
+
+    insert_points_label(viable_points, start_point(viable_points, configs))
     link_points(viable_points)
     return (viable_points, start_point)
 
-def start_point(points):
+def start_point(points, configs):
     if len(points) == 0:
         return -1
     
-    s = points[0]
-    l = len(s["coords"])
-    for i in range(1,len(points)):
-        p = points[i]
-        for j in range(0,l):
-            if(p["coords"][j] > s["coords"][j]):
-                break
-        else:
-            s = p
-    return s
+    if configs.keys().__contains__("extended_problem"):
+        vars = len(configs["variable_names"])
+        for p in points:
+            for n in range(0,vars):
+                if p["coords"][n] != 0:
+                    break
+            else:
+                return p
+    else:
+        s = points[0]
+        l = len(s["coords"])
+        for i in range(1,len(points)):
+            p = points[i]
+            for j in range(0,l):
+                if(p["coords"][j] > s["coords"][j]):
+                    break
+            else:
+                s = p
+        return s
+    
+    print("Couldn't find initial point.")
+    return -1
 
-def insert_points_label(points):
+def insert_points_label(points, start):
     points_with_label = []
-    s = start_point(points)
-    s["label"] = "P0"
-    points.remove(s)
-    points_with_label.append(s)
+    start["label"] = "P0"
+    points.remove(start)
+    points_with_label.append(start)
 
     counter = 1
-    current_point = s
+    current_point = start
     while len(points) > 0:
         for r in current_point["restrictions"]:
             for p in points:
@@ -103,7 +116,6 @@ def insert_points_label(points):
                     break
     
     points.extend(points_with_label)
-    return s
 
 def link_points(points):
     for p1 in points:
