@@ -25,17 +25,30 @@ def main(json_string):
                 primal_tabular.run(configs, output)
             case _:
                 output["error_msg"] = "Método inválido."
-                output["status"] = -1
+                output["status"] = 1
     except Exception as e:
         print(e)
         output["error_msg"] = "Um erro inesperado ocorreu."
         output["status"] = -1
 
     output["ellapsed_time"] = (time.time() - start_time) * 1000
-    return json.dumps(output)
+
+    output_json = ""
+    try:
+        output_json = json.dumps(output)
+    except Exception as e:
+        output["result"] = ""
+        output["error_msg"] = "Não foi possível converter o resultado."
+        output["status"] = 2
+        output_json = json.dumps(output)
+
+    return output_json
 
 if __name__ == "__main__":
     script_dir = os.path.dirname(__file__).replace("simplex\\","") #<-- absolute dir the script is in
-    rel_path = "examples\input_sample.json"
+
+    
+    rel_path = "examples\input_sample.json" #Modify this path to test another input
     input_sample = open(os.path.join(script_dir, rel_path), "r")
+
     print(main(input_sample.read()))

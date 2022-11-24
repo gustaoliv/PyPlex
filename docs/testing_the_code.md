@@ -1,11 +1,11 @@
 # Testando o código
 
-Para testar o código, verifique o python e todos os pacotes necessários estão instalados em sua máquina.
+Para testar o código, verifique se o python e todos os pacotes necessários estão instalados em sua máquina.
 
 Para instalar pacotes use o comando:
 
     pip intall nome-do-pacote
 
-Vá no arquivo *tests.py* e insira a chamada para o método a ser testado, com seus devidos objetos de entrada.
+Vá no arquivo *tests.py* e insira um novo case para testar métodos específicos em situações controladas
 
-Ou crie um if dentro do arquivo e teste diretamente. Mas desabilite o if qnd for rodar outros códigos.
+Para testar as funções primal e dual, adicione um novo input na pasta "examples". Depois vá no arquivo __main__, altere o caminho do arquivo de entreda (Ex.: "examples\input_sample1.json") e rode o programa. Caso dê algum erro, rode no modo depuração para verificar o motivo.

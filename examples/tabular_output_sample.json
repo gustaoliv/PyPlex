@@ -84,7 +84,7 @@
         "variables": ["x1","x2","sx3","sx4"],
         "input_variables": ["x1","x2"],
         "slack_variables": ["sx3","sx4"],
-        "virtual_variables": []
+        "artificial_variables": []
     },
     "multiple_solutions": [
         {

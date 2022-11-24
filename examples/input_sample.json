@@ -1,5 +1,5 @@
 {
-    "method": "GRAPHIC",
+    "method": "TABULAR",
     "objective": "MAXIMIZE",
     "objective_function": [3, 2],
     "restrictions": [

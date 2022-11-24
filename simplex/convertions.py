@@ -60,7 +60,10 @@ def extended_problem(configs = {}):
 
         res.append({"coeficients": c, "type":"=", "value": r["value"]})
     
-    output["variable_names_extended"] = output["variable_names"] + s_names + a_names
+    output["variables"] = output["variable_names"] + s_names + a_names
+    output["input_variables"] = output["variable_names"]
+    output["slack_variables"] = s_names
+    output["artificial_variables"] = a_names
     output["restrictions"] = res
     output["extended_problem"] = True
     
