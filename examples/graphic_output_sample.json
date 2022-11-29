@@ -1,33 +1,56 @@
 {
     "result": {
-        "iterations_path": ["P1", "P2", "P3"],
+        "iterations_path": [
+            "P0",
+            "P2",
+            "P3"
+        ],
         "iterations_count": 3,
-        "variables": ["x1","x2"],
+        "variables": [
+            "x1",
+            "x2"
+        ],
         "points": [
             {
+                "coords": [
+                    0.0,
+                    0.0
+                ],
+                "label": "P0",
+                "value": 0.0
+            },
+            {
+                "coords": [
+                    0.0,
+                    3.0
+                ],
                 "label": "P1",
-                "coords": [0,0]
+                "value": 6.0
             },
             {
+                "coords": [
+                    3.0,
+                    0.0
+                ],
                 "label": "P2",
-                "coords": [0,0]
+                "value": 9.0
             },
             {
+                "coords": [
+                    2.0,
+                    2.0
+                ],
                 "label": "P3",
-                "coords": [0,0]
-            },
-            {
-                "label": "P4",
-                "coords": [0,0]
+                "value": 10.0
             }
         ],
         "points_count": 4,
         "optimum_point": "P3",
-        "optimum_value": 10
+        "optimum_value": 10.0,
+        "has_multiple_solution": false,
+        "multiple_solutions": []
     },
-    "has_multiple_solution": false,
-    "multiple_solution": {},
     "status": 0,
-    "ellapsed_time": 0,
+    "ellapsed_time": 1.9984245300292969,
     "error_msg": ""
 }
