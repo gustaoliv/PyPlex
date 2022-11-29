@@ -64,12 +64,12 @@ def viability_region(configs):
         If we have just 2 variables and more then 2 points, we can have a surface.
         And if the problem have more then 2 variable, the result may be the edges of a multidimencional object.
     """
-
-    insert_points_label(viable_points, start_point(viable_points, configs))
+    start_point = get_start_point(viable_points, configs)
+    insert_points_label(viable_points, start_point)
     link_points(viable_points)
     return (viable_points, start_point)
 
-def start_point(points, configs):
+def get_start_point(points, configs):
     if len(points) == 0:
         return -1
     

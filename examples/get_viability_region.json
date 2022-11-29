@@ -1,0 +1,29 @@
+{
+    "method": "VIABILITY_REGION",
+    "objective": "MAXIMIZE",
+    "objective_function": [3, 2],
+    "restrictions": [
+        {
+            "coeficients": [2,1],
+            "type": "<=",
+            "value": 6
+        },
+        {
+            "coeficients": [1,2],
+            "type": "<=",
+            "value": 6
+        },
+        {
+            "coeficients": [1,0],
+            "type": ">=",
+            "value": 0
+        },
+        {
+            "coeficients": [0,1],
+            "type": ">=",
+            "value": 0
+        }
+    ],
+    "variable_names": ["x1", "x2"],
+    "integer_solution": false
+}

@@ -24,7 +24,7 @@ def main(json_string):
             case "DUAL":
                 primal_tabular.run(configs, output)
             case _:
-                output["error_msg"] = "Método inválido."
+                output["error_msg"] = "Metodo invalido."
                 output["status"] = 1
     except Exception as e:
         print(e)
@@ -38,12 +38,13 @@ def main(json_string):
         output_json = json.dumps(output)
     except Exception as e:
         output["result"] = ""
-        output["error_msg"] = "Não foi possível converter o resultado."
+        output["error_msg"] = "Nao foi possivel converter o resultado."
         output["status"] = 2
         output_json = json.dumps(output)
 
     return output_json
 
+#The code below have no effect if you are running from another file
 if __name__ == "__main__":
     script_dir = os.path.dirname(__file__).replace("simplex\\","") #<-- absolute dir the script is in
 
