@@ -1,0 +1,58 @@
+* {
+    font-family: 'Anton', sans-serif;
+}
+
+body{
+    background-color: #3AB4B9;
+}
+
+input[type="radio"], input[type="checkbox"]{
+    -webkit-appearance: none;
+    background-color: #fff;
+}
+input[type="radio"]:checked, input[type="checkbox"]:checked{
+    background-color: #3AB4B9;
+    border-color: #3AB4B9;
+}
+
+.conteudo{
+    margin-top: 50px;
+    padding:50px;
+    background-color: #fff; 
+    border-radius: 25px;
+}
+.forms{
+    align-items: center;
+    padding: 20px;
+    margin: 20px;
+    font-size: 25px;
+}
+.form-label{ 
+    color: #3AB4B9;
+}
+.form-control{
+    font-size: 25px; 
+}
+
+.steps{
+    margin-top: 10px;
+}
+label{
+    color: #6c6c6c;
+}
+
+.next{
+    font-size: 40px;
+    color: #3AB4B9;
+    font-weight: 900;
+    border-radius: 15px;
+    border: 5px solid #3AB4B9;
+}
+.next:hover{
+    font-size: 40px;
+    font-weight: 900;
+    color: #fff;
+    background-color:#3AB4B9;
+    border-radius: 15px;
+    border: 5px solid #3AB4B9;
+}

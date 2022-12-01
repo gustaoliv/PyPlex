@@ -1,55 +1,47 @@
 {% extends 'base.html' %}
-
-{% block content %}
-
-    <br><br><br><br><br>
-
-    <div class="container">
-        <form method="post">
-            {% csrf_token %}
-
-            <div class="form-group">
-                <label>Nº de variáveis:</label>
-                {{form.numVar}}
-            </div>
-            <div class="form-group">
-                <label>Nº de restrições:</label>
-                {{form.numRest}}
-            </div>
-
-            <fieldset class="form-group">
-                <div class="row">
-                    <div class="col-sm-6">
+{% load static %}
+{% block content %} 
+    <img src="{% static '/images/step1.png' %}" class="img-fluid steps" alt="">
+    <form method="post">
+        {% csrf_token %}
+        <div class="forms d-flex justify-content-center">
+            <div class="col-10 col-sm-8 col-md-7">
+                <div class="mb-4">
+                    <label class="form-label">Número de Variáveis:</label>
+                    {{form.numVar}}
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Número de Restrições:</label>
+                    {{form.numRest}}
+                </div>
+                <div class="row mb-4">
+                    <div class="col-6">
                         {% for option in form.exibition_type %}
-                        <div class="form-check">
-                            {{option}}
-                        </div>
+                            <div class="form-check">
+                                {{option}}
+                            </div>
                         {% endfor %}
                     </div>
-
-                    <div class="col-sm-6">
+                    <div class="col-6">
                         {% for option in form.method %}
                         <div class="form-check">
                             {{option}}
                         </div>
                         {% endfor %}
                     </div>
-
                 </div>
-            </fieldset>
-
-             <div class="form-group">
                 <div class="form-check">
                     {{form.integer_solution}}
                     <label class="form-check-label">
                         {{form.integer_solution.label}}
                     </label>
-                </div>
+                </div> 
             </div>
-
-            <input type="submit" value="Continuar">
-        </form>
-
-    </div>
-
+        </div>
+        <div class="d-flex bd-highlight mb-4">
+            <div class="ms-auto p-2 bd-highlight">
+                <button type="submit" class="btn next">PRÓXIMO <i class="bi bi-caret-right-fill"></i></button>
+            </div> 
+        </div>
+    </form>
 {% endblock %}
