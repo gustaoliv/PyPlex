@@ -33,11 +33,11 @@ class SecondStepForm(forms.Form):
 
         for i in range(numVar):
             if i != (numVar - 1):
-                self.fields[f'x{i}'] = forms.CharField(initial=0, label=f'x{i + 1} + ',
-                                                       widget=forms.NumberInput(attrs={'class':'form-control'}))
+                self.fields[f'x{i}'] = forms.DecimalField(initial=0.0, label=f'x{i + 1} + ',
+                                                       widget=forms.NumberInput(attrs={'class':'form-control', 'step': 0.10}))
             else:
-                self.fields[f'x{i}'] = forms.CharField(initial=0, label=f'x{i + 1}',
-                                                       widget=forms.NumberInput(attrs={'class': 'form-control'}))
+                self.fields[f'x{i}'] = forms.DecimalField(initial=0.0, label=f'x{i + 1}',
+                                                       widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 0.10}))
 
         # restrictions
         for i in range(numRest):
@@ -48,11 +48,11 @@ class SecondStepForm(forms.Form):
                                                                 widget=forms.Select(attrs={'class':'form-control'}))
                 elif j < numVar:
                     if j != (numVar - 1):
-                        self.fields[f'a{i}{j}'] = forms.CharField(initial=0, label=f'x{j + 1} + ',
-                                                                  widget=forms.NumberInput(attrs={'class':'form-control'}))
+                        self.fields[f'a{i}{j}'] = forms.DecimalField(initial=0.0, label=f'x{j + 1} + ',
+                                                                  widget=forms.NumberInput(attrs={'class':'form-control', 'step': 0.10}))
                     else:
-                        self.fields[f'a{i}{j}'] = forms.CharField(initial=0, label=f'x{j + 1}',
-                                                                  widget=forms.NumberInput(attrs={'class':'form-control'}))
+                        self.fields[f'a{i}{j}'] = forms.DecimalField(initial=0.0, label=f'x{j + 1}',
+                                                                  widget=forms.NumberInput(attrs={'class':'form-control', 'step': 0.10}))
                 else:
-                    self.fields[f'a{i}{j}'] = forms.CharField(initial=0, label=f'dontShow',
-                                                              widget=forms.NumberInput(attrs={'class':'form-control'}))
+                    self.fields[f'a{i}{j}'] = forms.DecimalField(initial=0.0, label=f'dontShow',
+                                                              widget=forms.NumberInput(attrs={'class':'form-control', 'step': 0.10}))
