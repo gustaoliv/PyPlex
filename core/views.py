@@ -32,11 +32,11 @@ def second_step(request):
         request.session['objective'] = request.POST['objective']
 
         for i in range(numVar):
-            request.session[f'x{i}'] = request.POST[f'x{i}']
+            request.session[f'x{i:02d}'] = request.POST[f'x{i:02d}']
 
         for i in range(numRest):
             for j in range(numVar + 2):
-                request.session[f'a{i}{j}'] = request.POST[f'a{i}{j}']
+                request.session[f'a{i:02d}{j:02d}'] = request.POST[f'a{i:02d}{j:02d}']
 
         return redirect(url)
     else:
