@@ -29,16 +29,16 @@ class SecondStepForm(forms.Form):
         # objetive function
         OBJECTIVE_CHOICES = [('MAXIMIZE', 'Maximizar'), ('MINIMIZE', 'Minimizar')]
         self.fields['objective'] = forms.ChoiceField(choices=OBJECTIVE_CHOICES, label='objective',
-                                                     widget=forms.Select(attrs={'class':'form-control'}))
-
+                                                     widget=forms.Select(attrs={'class':'form-control text-center'}))
+        i=0
         for i in range(numVar):
             if i != (numVar - 1):
-                self.fields[f'x{i}'] = forms.DecimalField(initial=0.0, label=f'x{i + 1} + ',
-                                                       widget=forms.NumberInput(attrs={'class':'form-control', 'step': 0.10}))
+                self.fields[f'x{i}'] = forms.DecimalField(label=f'x{i + 1} + ',
+                                                       widget=forms.NumberInput(attrs={'class':'form-control', 'step': 0.10, 'placeholder':f'x{i + 1}'}))
             else:
-                self.fields[f'x{i}'] = forms.DecimalField(initial=0.0, label=f'x{i + 1}',
-                                                       widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 0.10}))
-
+                self.fields[f'x{i}'] = forms.DecimalField(label=f'x{i + 1}',
+                                                       widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 0.10, 'placeholder':f'x{i + 1}'}))
+        
         # restrictions
         for i in range(numRest):
             for j in range(numVar + 2):
@@ -48,11 +48,11 @@ class SecondStepForm(forms.Form):
                                                                 widget=forms.Select(attrs={'class':'form-control'}))
                 elif j < numVar:
                     if j != (numVar - 1):
-                        self.fields[f'a{i}{j}'] = forms.DecimalField(initial=0.0, label=f'x{j + 1} + ',
-                                                                  widget=forms.NumberInput(attrs={'class':'form-control', 'step': 0.10}))
+                        self.fields[f'a{i}{j}'] = forms.DecimalField(label=f'x{j + 1} + ',
+                                                                  widget=forms.NumberInput(attrs={'class':'form-control', 'step': 0.10, 'placeholder':f'x{j + 1}'}))
                     else:
-                        self.fields[f'a{i}{j}'] = forms.DecimalField(initial=0.0, label=f'x{j + 1}',
-                                                                  widget=forms.NumberInput(attrs={'class':'form-control', 'step': 0.10}))
+                        self.fields[f'a{i}{j}'] = forms.DecimalField(label=f'x{j + 1}',
+                                                                  widget=forms.NumberInput(attrs={'class':'form-control', 'step': 0.10, 'placeholder':f'x{j + 1}'}))
                 else:
-                    self.fields[f'a{i}{j}'] = forms.DecimalField(initial=0.0, label=f'dontShow',
+                    self.fields[f'a{i}{j}'] = forms.DecimalField(label=f'dontShow',
                                                               widget=forms.NumberInput(attrs={'class':'form-control', 'step': 0.10}))

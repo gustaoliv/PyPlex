@@ -7,45 +7,41 @@
         {% csrf_token %}
         <div class="forms d-flex justify-content-center">
             <div class="col-12">
-                <div class="mb-4">
+                <div class="mb-4 text-center">
                     <label class="form-label">Qual o objetivo da função?</label>
-                    {{ form.objective }}
+                    <div class="d-flex justify-content-center">
+                        <div class="col-6">
+                            {{ form.objective }}
+                        </div>
+                    </div>
                 </div>
-                <div class="mb-4">
+                <div class="mb-4 horizontal-scrollable text-center">
                     <label  class="form-label">Função Objetivo:</label>   
-                    <div class="row gx-3">            
+                    <div class="row gx-0 mb-3 text-center d-block">            
                         {% for field in form.visible_fields|slice:sliceObjet  %}
-                            <div class="col">
+                            <div class="campo col-3 col-sm-3 col-md-2 col-lg-2 col-xl-1 ">
                                 {{ field }}
-                            </div>
-            
-                            <div class="col col-form-label">
-                                <label>{{ field.label }}</label>
                             </div>
                         {% endfor %}
                     </div>
                 </div>
-                <label  class="form-label">Restrições:</label>
-                <div class="form-row mb-4">
-                    {% for field in form.visible_fields|slice:sliceRest  %}
-                        <div class="col">
-                            {{ field }}
-                        </div>
-            
-                        {% if field.label != "dontShow" and field.label != "signal" %}
-                        <div class="col-form-label">
-                            <label>{{ field.label }}</label>
-                        </div>
-                        {% endif %}
-            
-                        <!--  It's the last input of the row -->
-                        {% if field.label == "dontShow" %}
-                            <!--  Close old row -->
+                <div class="mb-4 horizontal-scrollable text-center">
+                    <label  class="form-label">Restrições:</label>
+                    <div class="row gx-0 mb-4 text-center d-block">
+                        {% for field in form.visible_fields|slice:sliceRest  %}
+                            <div class="campo col-3 col-sm-3 col-md-3 col-lg-2 col-xl-1 ">
+                                {{ field }}
                             </div>
-                            <!--  Starts a new one -->
-                            <div class="form-row mb-3">
-                        {% endif %}
-                    {% endfor %}    
+                
+                            <!--  It's the last input of the row -->
+                            {% if field.label == "dontShow" %}
+                                <!--  Close old row -->
+                                </div>
+                                <!--  Starts a new one -->
+                                <div class="row gx-0 mb-4 text-center d-block">
+                            {% endif %}
+                        {% endfor %}        
+                    </div>
                 </div>
             </div>
         </div>
