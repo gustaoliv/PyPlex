@@ -6,28 +6,37 @@
     <div class="container">
         <h1>Resultado Tabular</h1>
 
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    {% for header in headers %}
-                    <th scope="col">{{header}}</th>
+        {% for table in tables %}
+            <table class="table table-bordered mt-5">
+                <thead>
+                    <tr>
+                        {% for header in headers %}
+                            <th scope="col">{{header}}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for line in table %}
+                        <tr>
+                            {% for column in line %}
+                                <td>{{column}}</td>
+                            {% endfor %}
+                        </tr>
                     {% endfor %}
-                </tr>
-            </thead>
-        <tbody>
-            {% for iterat in table_values %}
-                {% for line in iterat %}
+                </tbody>
+            </table>
+        {% endfor %}
 
-                <tr>
-                    {% for value in line %}
-                    <td>{{value}}</td>
-                    {% endfor %}
-                </tr>
 
-                {% endfor %}
+
+        <p>Ponto ótimo: [
+            {% for var in optimum_point %}
+                {{var}};
             {% endfor %}
-        </tbody>
-        </table>
+            ]
+        </p>
+
+        <p>Valor ótimo: {{optimum_value}}</p>
 
     </div>
 
