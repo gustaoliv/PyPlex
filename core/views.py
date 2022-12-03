@@ -40,6 +40,9 @@ def second_step(request):
 
         return redirect(url)
     else:
+        if "numVar" not in request.session.keys():
+            return redirect('')
+
         numVar = int(request.session['numVar'])
         numRest = int(request.session['numRest'])
         form = SecondStepForm(numVar, numRest)
