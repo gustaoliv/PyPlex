@@ -166,4 +166,20 @@ def make_json(session_dict):
     if "integer_solution" in session_dict.keys():
         requestJson["integerSolution"] = session_dict["integer_solution"] == 'on'
 
+    var_names = []
+    for i in range(1, int(session_dict["numVar"]) + 1):
+        var_names.append(f"x{i}")
+
+    requestJson["variable_names"] = var_names
+
     return requestJson
+
+
+def mmc(nums):
+    max_ = max(nums)
+    i = 1
+    while True:
+        mult = max_ * i
+        if all(mult%nr == 0 for nr in nums):
+            return mult
+        i += 1
