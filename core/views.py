@@ -84,9 +84,9 @@ def tabular_view(request):
                     {"coeficients": [0.0, 1.5, -0.5, 1.0], "value": 3.0, "base": "sx4"}],
                     "base_variables": ["x1", "sx4"], "target_point": [3.0, 0.0, 0.0, 3.0], "base_in": "x2",
                     "base_out": "sx4", "is_optimum": False},
-                    {"z": {"coeficients": [0.0, 0.0, 1.3333333333333333, 0.3333333333333333], "value": 10.0}, "expressions": [
-                    {"coeficients": [1.0, 0.0, 0.6666666666666666, -0.3333333333333333], "value": 2.0, "base": "x1"},
-                    {"coeficients": [0.0, 1.0, -0.3333333333333333, 0.6666666666666666], "value": 2.0, "base": "x2"}],
+                    {"z": {"coeficients": [0.0, 0.0, 1.333, 0.333], "value": 10.0}, "expressions": [
+                    {"coeficients": [1.0, 0.0, 0.666, -0.333], "value": 2.0, "base": "x1"},
+                    {"coeficients": [0.0, 1.0, -0.333, 0.666], "value": 2.0, "base": "x2"}],
                     "base_variables": ["x1", "x2"], "target_point": [2.0, 2.0, 0.0, 0.0], "base_in": "", "base_out": "",
                     "is_optimum": True}], "iterations_count": 3, "variables": ["x1", "x2", "sx3", "sx4"],
                     "input_variables": ["x1", "x2"], "slack_variables": ["sx3", "sx4"],
@@ -117,7 +117,7 @@ def tabular_view(request):
                            "optimum_value": optimum_value})
 
 
-def graphic_view(request):
+def graphic_view(request): 
     return render(request, 'resultado_grafico.html')
 
 # https://getbootstrap.com/docs/4.3/components/forms/

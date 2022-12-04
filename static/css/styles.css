@@ -15,6 +15,22 @@ input[type="radio"]:checked, input[type="checkbox"]:checked{
     border-color: #3AB4B9;
 }
 
+.main-title{
+    color:  #3AB4B9;
+    margin: 30px;
+    font-size: 40px;
+    text-align: center;
+}
+
+.main-title::after
+{
+    content: '';
+    display: block;
+    width: 30%;
+    height: 2px;
+    background: #3AB4B9;
+    margin: 0 auto;
+}
 .conteudo{
     margin-top: 50px;
     padding:50px;
@@ -57,7 +73,18 @@ label{
     border: 5px solid #3AB4B9;
 }
 
+.results{
+    text-align: left;
+}
 
+.area-result{
+    border: 5px solid #3AB4B9;
+    border-radius: 15px;
+    margin: 10px;
+    padding:10px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+}
 /* The heart of the matter */
           
 .horizontal-scrollable > .row {
@@ -69,19 +96,14 @@ label{
     display: inline-block;
     float: none;
 }
-/* Decorations */
-  
-.col-xs-4 {
-    color: white;
-    font-size: 24px;
-    padding-bottom: 20px;
-    padding-top: 18px;
-}
-  
-.col-xs-4:nth-child(2n+1) {
-    background: green;
-}
-  
-.col-xs-4:nth-child(2n+2) {
-    background: black;
+
+
+@media screen and (max-width: 720px) {
+    *,h3, .forms, .results, .form-control{
+        font-family: 'Anton', sans-serif;
+        font-size: 20px;
+    }
+    .next,.next:hover{
+        font-size: 30px; 
+    }
 }
