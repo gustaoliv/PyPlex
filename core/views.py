@@ -152,12 +152,14 @@ def graphic_view(request):
         "integer_solution": False
     }
 
-    json_response = {"result": {"iterations_path": ["P0", "P2", "P3"], "iterations_count": 3, "variables": ["x1", "x2"],
+    json_response = {"result": {"iterations_path": ["P0", "P1", "P2"], "iterations_count": 3, "variables": ["x1", "x2"],
                                 "points": [{"coords": [0.0, 0.0], "label": "P0", "value": 0.0},
-                                           {"coords": [0.0, 3.0], "label": "P1", "value": 6.0},
-                                           {"coords": [3.0, 0.0], "label": "P2", "value": 9.0},
-                                           {"coords": [2.0, 2.0], "label": "P3", "value": 10.0}], "points_count": 4,
-                                "optimum_point": "P3", "optimum_value": 10.0, "has_multiple_solution": False,
+                                           {"coords": [0.0, 6.0], "label": "P1", "value": 30.0},
+                                           {"coords": [2.0, 6.0], "label": "P2", "value": 36.0},
+                                           {"coords": [4.0, 3.0], "label": "P3", "value": 27.0},
+                                           {"coords": [4.0, 0.0], "label": "P4", "value": 12.0}], 
+                                "points_count": 4,
+                                "optimum_point": "P3", "optimum_value": 36.0, "has_multiple_solution": False,
                                 "multiple_solutions": []}, "status": 0, "ellapsed_time": 1.9984245300292969,
                      "error_msg": ""}
 
@@ -173,7 +175,7 @@ def graphic_view(request):
 
     data = pd.DataFrame({"x": x, "y": y, "lables": lables, "values": values})
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=x, y=y, text="lables", fill='tonexty', fillcolor = 'green'))
+    fig.add_trace(go.Scatter(x=x, y=y, text="lables", fill='tonexty', fillcolor = 'lightgreen'))
     fig.update_traces(textposition="top right")
     graph = plot(fig, output_type="div")
 

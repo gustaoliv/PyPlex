@@ -51,10 +51,10 @@ class SecondStepForm(forms.Form):
                 elif j < numVar:
                     if j != (numVar - 1):
                         self.fields[f'a{i:02d}{j:02d}'] = forms.DecimalField(label=f'x{j + 1} + ',
-                                                                  widget=forms.NumberInput(attrs={'class':'form-control', 'step': 0.10, 'placeholder':f'x{j + 1}'}))
+                                                                  widget=forms.NumberInput(attrs={'class':'form-control', 'step': 0.10, 'placeholder':f'x{j + 1}', 'pattern':'[0-9]+$'}))
                     else:
                         self.fields[f'a{i:02d}{j:02d}'] = forms.DecimalField(label=f'x{j + 1}',
-                                                                  widget=forms.NumberInput(attrs={'class':'form-control', 'step': 0.10, 'placeholder':f'x{j + 1}'}))
+                                                                  widget=forms.NumberInput(attrs={'class':'form-control', 'step': 0.10, 'placeholder':f'x{j + 1}', 'pattern':'[0-9]+$'}))
                 else:
                     if i == numRest - 1 and j == numVar + 1:
                         self.fields[f'a{i:02d}{j:02d}'] = forms.DecimalField(label=f'dontShowLast',
