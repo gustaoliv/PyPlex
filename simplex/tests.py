@@ -35,7 +35,43 @@ input = {
     "integer_solution": False
 }
 
-test_list = [3,4]
+problema_radioterapico = {
+    "integer_solution": False,
+    "method": "TABULAR",
+    "type": "PRIMAL",
+    "objective": "MINIMIZE",
+    "objective_function": [0.4, 0.5],
+    "restrictions": [
+        {
+            "coeficients": [0.3, 0.1],
+            "type": "<=",
+            "value": 2.7
+        },
+        {
+            "coeficients": [0.5, 0.5],
+            "type": "=",
+            "value": 6
+        },
+        {
+            "coeficients": [0.6, 0.4],
+            "type": ">=",
+            "value": 6
+        },
+        {
+            "coeficients": [1,0],
+            "type": ">=",
+            "value": 0
+        },
+        {
+            "coeficients": [0,1],
+            "type": ">=",
+            "value": 0
+        }
+    ],
+    "variable_names": ["x1", "x2"]
+}
+
+test_list = [1]
 
 for n in test_list:
     match n:
@@ -45,7 +81,7 @@ for n in test_list:
             print("")
         case 1:
             print("extended_problem test: ")
-            print(convertions.extended_problem(input))
+            print(convertions.extended_problem(problema_radioterapico))
             print("")
         case 2:
             print("normalize_restriction test: ")

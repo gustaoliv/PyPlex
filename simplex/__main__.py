@@ -3,6 +3,9 @@ import os
 import time
 import primal_tabular
 import primal_graphic
+import dual_tabular
+import dual_graphic
+import integer_solution
 
 #The main function receives a Json Object containg all inputs and configurations
 def main(json_string):
@@ -16,20 +19,30 @@ def main(json_string):
         "error_msg": ""
     }
     try:
-        match configs["method"]:
-            case "GRAPHIC":
+        match (configs["type"] + " - " + configs["method"]):
+            case "PRIMAL - GRAPHIC":
                 primal_graphic.run(configs, output)
-            case "TABULAR":
+            case "PRIMAL - TABULAR":
                 primal_tabular.run(configs, output)
-            case "DUAL":
+            case "DUAL - GRAPHIC":
+                primal_tabular.run(configs, output)
+            case "DUAL - TABULAR":
                 primal_tabular.run(configs, output)
             case _:
-                output["error_msg"] = "Metodo invalido."
+                output["error_msg"] = "Metodo ou tipo invalido."
                 output["status"] = 1
     except Exception as e:
         print(e)
         output["error_msg"] = "Um erro inesperado ocorreu."
         output["status"] = -1
+
+    if configs["integer_solution"]:
+        try:
+            integer_solution.run(configs, output)
+        except Exception as e:
+            print(e)
+            output["error_msg"] = "Nao foi possivel encontrar a solucao inteira."
+            output["status"] = -1
 
     output["ellapsed_time"] = (time.time() - start_time) * 1000
 

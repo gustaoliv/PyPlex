@@ -1,18 +1,23 @@
 {
     "integer_solution": false,
-    "method": "GRAPHIC",
+    "method": "TABULAR",
     "type": "PRIMAL",
-    "objective": "MAXIMIZE",
-    "objective_function": [3, 2],
+    "objective": "MINIMIZE",
+    "objective_function": [0.4, 0.5],
     "restrictions": [
         {
-            "coeficients": [2,1],
+            "coeficients": [0.3, 0.1],
             "type": "<=",
+            "value": 2.7
+        },
+        {
+            "coeficients": [0.5, 0.5],
+            "type": "=",
             "value": 6
         },
         {
-            "coeficients": [1,2],
-            "type": "<=",
+            "coeficients": [0.6, 0.4],
+            "type": ">=",
             "value": 6
         },
         {

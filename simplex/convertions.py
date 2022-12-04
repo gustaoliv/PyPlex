@@ -22,8 +22,9 @@ def extended_problem(configs = {}):
     virtual_vars = 0
     for restriction in ref:
         c = restriction["coeficients"]
-        slack_vars+=1
-        if restriction["type"] == ">=": virtual_vars+=1
+        
+        if ["<=", ">="].count(restriction["type"]): slack_vars+=1
+        if ["=", ">="].count(restriction["type"]): virtual_vars+=1
 
     adicional_vars = slack_vars + virtual_vars
 
@@ -49,12 +50,13 @@ def extended_problem(configs = {}):
     for r in ref:
         c = r["coeficients"].__add__(np.zeros(adicional_vars).tolist())
 
-        c[s_pos] = 1
-        s_pos+=1
-        s_names.append("sx"+s_pos.__str__())
-
-        if r["type"] == ">=":
-            c[a_pos+1] = "M"
+        if ["<=", ">="].count(r["type"]):
+            c[s_pos] = 1 if r["type"] == "<=" else -1
+            s_pos+=1
+            s_names.append("sx"+s_pos.__str__())
+        if ["=", ">="].count(r["type"]):
+            c[a_pos] = 1
+            output["objective_function"][a_pos] = "M"
             a_pos+=1
             a_names.append("ax"+a_pos.__str__())
 
