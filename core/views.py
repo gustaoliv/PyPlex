@@ -1,12 +1,13 @@
 import json
 import pdb
-
 from django.shortcuts import render
 from .forms import *
 from .utils import *
 from django.shortcuts import redirect
 from django.http import JsonResponse
-
+from plotly.offline import plot
+import plotly.graph_objects as go
+import pandas as pd
 
 # Create your views here.
 def first_step(request):
@@ -117,7 +118,65 @@ def tabular_view(request):
                            "optimum_value": optimum_value})
 
 
-def graphic_view(request): 
-    return render(request, 'resultado_grafico.html')
+def graphic_view(request):
+
+
+
+    input_data = {
+        "method": "GRAPHIC",
+        "objective": "MAXIMIZE",
+        "objective_function": [3, 2],
+        "restrictions": [
+            {
+                "coeficients": [2, 1],
+                "type": "<=",
+                "value": 6
+            },
+            {
+                "coeficients": [1, 2],
+                "type": "<=",
+                "value": 6
+            },
+            {
+                "coeficients": [1, 0],
+                "type": ">=",
+                "value": 0
+            },
+            {
+                "coeficients": [0, 1],
+                "type": ">=",
+                "value": 0
+            }
+        ],
+        "variable_names": ["x1", "x2"],
+        "integer_solution": False
+    }
+
+    json_response = {"result": {"iterations_path": ["P0", "P2", "P3"], "iterations_count": 3, "variables": ["x1", "x2"],
+                                "points": [{"coords": [0.0, 0.0], "label": "P0", "value": 0.0},
+                                           {"coords": [0.0, 3.0], "label": "P1", "value": 6.0},
+                                           {"coords": [3.0, 0.0], "label": "P2", "value": 9.0},
+                                           {"coords": [2.0, 2.0], "label": "P3", "value": 10.0}], "points_count": 4,
+                                "optimum_point": "P3", "optimum_value": 10.0, "has_multiple_solution": False,
+                                "multiple_solutions": []}, "status": 0, "ellapsed_time": 1.9984245300292969,
+                     "error_msg": ""}
+
+    x = []
+    y = []
+    lables = []
+    values = []
+    for coord in json_response["result"]["points"]:
+        x.append(coord["coords"][0])
+        y.append(coord["coords"][1])
+        lables.append(coord["label"])
+        values.append(coord["value"])
+
+    data = pd.DataFrame({"x": x, "y": y, "lables": lables, "values": values})
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=x, y=y, text="lables", fill='tonexty', fillcolor = 'green'))
+    fig.update_traces(textposition="top right")
+    graph = plot(fig, output_type="div")
+
+    return render(request, 'resultado_grafico.html', context={"graph": graph})
 
 # https://getbootstrap.com/docs/4.3/components/forms/
