@@ -31,10 +31,10 @@ def extended_problem(configs = {}):
     #Update the restriction coeficients
     length = len(ref[0]["coeficients"])
     for r in res:
-        r["coeficients"] = r["coeficients"].__add__(np.zeros(adicional_vars).tolist())
+        r["coeficients"] = concat(r["coeficients"], np.zeros(adicional_vars))
     
     #Update the objective function coeficients
-    output["objective_function"] = output["objective_function"].copy().__add__(np.zeros(adicional_vars).tolist())
+    output["objective_function"] = concat(output["objective_function"], np.zeros(adicional_vars))
 
     #Insert new inferior limits
     total_length = length + adicional_vars
@@ -45,24 +45,28 @@ def extended_problem(configs = {}):
 
     s_names = []
     a_names = []
-    s_pos = length
-    a_pos = length + slack_vars
+    output["variables"] = output["variable_names"].copy()
+    pos = length
     for r in ref:
-        c = r["coeficients"].__add__(np.zeros(adicional_vars).tolist())
+        c = concat(r["coeficients"], np.zeros(adicional_vars))
 
         if ["<=", ">="].count(r["type"]):
-            c[s_pos] = 1 if r["type"] == "<=" else -1
-            s_pos+=1
-            s_names.append("sx"+s_pos.__str__())
+            c[pos] = 1 if r["type"] == "<=" else -1
+            pos+=1
+            name = "sx"+pos.__str__()
+            s_names.append(name)
+            output["variables"].append(name)
+        
         if ["=", ">="].count(r["type"]):
-            c[a_pos] = 1
-            output["objective_function"][a_pos] = "M"
-            a_pos+=1
-            a_names.append("ax"+a_pos.__str__())
+            c[pos] = 1
+            output["objective_function"][pos] = "M"
+            pos+=1
+            name = "ax"+pos.__str__()
+            a_names.append(name)
+            output["variables"].append(name)
 
         res.append({"coeficients": c, "type":"=", "value": r["value"]})
     
-    output["variables"] = output["variable_names"] + s_names + a_names
     output["input_variables"] = output["variable_names"]
     output["slack_variables"] = s_names
     output["artificial_variables"] = a_names
@@ -80,9 +84,56 @@ def normalize_restriction(restriction, ref_index):
     r["value"] /= ref_value
     return r
 
-def primal_to_dual(configs = {}):
-    output = []
+def dual_problem(configs = {}):
+    output = configs.copy()
+    output["objective"] = "MAXIMIZE"
+    output["objective_function"] = []
+    output["problem_type"] = "DUAL"
+    output["restrictions"] = []
+    output["variable_names"] = []
+
+    exp = []
+    for r in configs["restrictions"]:
+        if not is_inferior_limit_restriction(r):
+            exp.append(r)
+    
+    num_vars = len(configs["objective_function"])
+    for i in range(0, num_vars):
+        c = {
+            "coeficients": [],
+            "type": "<=",
+            "value": configs["objective_function"][i]
+        }
+        output["restrictions"].append(c)
+        for r in exp:
+            c["coeficients"].append(r["coeficients"][i])
+    
+    num_res = len(exp)
+    for i in range(0, num_res):
+        r = configs["restrictions"][i]
+
+        if r["type"] != "=":
+            c = {
+                "coeficients": np.zeros(num_res),
+                "type": r["type"],
+                "value": 0
+            }
+            c["coeficients"][i] = 1
+            output["restrictions"].append(c)
+        
+        output["variable_names"].append("y"+str(i+1))
+        output["objective_function"].append(r["value"])
+
     return output
+
+def concat(arr1 = [], arr2 = []):
+    (l1, l2) = (len(arr1), len(arr2))
+    out = np.zeros(l1 + l2)
+    for i in range(0, l1):
+        out[i] = arr1[i]
+    for i in range(0, l2):
+        out[l1 + i] = arr2[i]
+    return out
 
 def is_inferior_limit_restriction(restriction):
     var_index = -1

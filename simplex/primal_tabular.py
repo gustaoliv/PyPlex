@@ -1,21 +1,31 @@
 import numpy as np
 import convertions
-import graphic_methods
+import math
+
+PRECISION = 3
 
 def min(vec):
+    v1 = vec["reals"]
+    v2 = vec["artificials"]
     index = 0
-    min = vec[0]
-    for i in range(1, len(vec)):
-        if vec[i] < min:
+    min = [v1[0], v2[0]]
+    for i in range(1, len(v1)):
+        if v2[i] < min[1] or (v2[i] == min[1] and v1[i] < min[0]):
             index = i
-            min = vec[i]
-    return (min, index)
+            min = [v1[i], v2[i]]
+    return ({"real": min[0], "artificial": min[1]}, index)
 
 def create_iteration(obj):
     iteration = {
         "z": {
-            "coeficients": None,
-            "value": 0
+            "coeficients": {
+                "reals": None,
+                "artificials": None
+            },
+            "value": {
+                "real": 0.0,
+                "artificial": 0.0
+            }
         },
         "expressions": [],
         "base_variables": None,
@@ -28,12 +38,65 @@ def create_iteration(obj):
     obj["iterations_count"]+=1
     return iteration
 
+def reduce_z(index, pivo, exp):
+    real_factor = -exp["coeficients"]["reals"][index]
+    artificial_factor = -exp["coeficients"]["artificials"][index]
+    return {
+        "coeficients": 
+        {
+            "reals": np.array(exp["coeficients"]["reals"]) + np.array(pivo["coeficients"]) * real_factor,
+            "artificials": np.array(exp["coeficients"]["artificials"]) + np.array(pivo["coeficients"]) * artificial_factor
+        },
+        "value":
+        {
+            "real": exp["value"]["real"] + pivo["value"] * real_factor,
+            "artificial": exp["value"]["artificial"] + pivo["value"] * artificial_factor
+        }
+    }
+
 def reduce_expression(index, pivo, exp):
     factor = -exp["coeficients"][index]
     return {
         "coeficients": np.array(exp["coeficients"]) + np.array(pivo["coeficients"]) * factor,
         "value": exp["value"] + pivo["value"] * factor
     }
+
+def separe_artificial_coeficients(arr = []):
+    out = {
+        "reals": [],
+        "artificials": []
+    }
+    for n in arr:
+        v = str(n).split("M")
+        if len(v) == 1:
+            out["reals"].append(float(n))
+            out["artificials"].append(0.0)
+        else:
+            out["reals"].append(float(v[0]) if v[0] != "" else 0)
+            out["artificials"].append(float(v[1]) if v[1] != "" else 1)
+    
+    out["reals"] = np.array(out["reals"])
+    out["artificials"] = np.array(out["artificials"])
+    
+    return out
+
+def round_list(arr = []):
+    out = []
+    for n in arr:
+        out.append(round(n, PRECISION))
+    return out
+
+def get_z_text(r = 0, a = 0):
+    out = ""
+    r = round(r,PRECISION)
+    a = round(a,PRECISION)
+    if(r != 0):
+        out += str(r)
+    if(a != 0):
+        out += " "+str(a)+"M" if a < 0 else "+ " + str(a) + "M"
+    if out == "":
+        out = "0"
+    return out
 
 #The simplex_primal function receives an Object containg all inputs and configurations
 def run(configs, output):
@@ -44,7 +107,8 @@ def run(configs, output):
         new_config = convertions.extended_problem(configs)
     except Exception as e:
         output["status"] = -1
-        output["error_msg"] = "Unable to define the extended problem. Error: " + e
+        output["error_msg"] = "Unable to define the extended problem. Error: " + e.__str__()
+        return
     
     #Write initial state
     result = {
@@ -58,23 +122,45 @@ def run(configs, output):
         "artificial_variables": new_config["artificial_variables"]
     }
     current_iteration = create_iteration(result)
-    current_iteration["z"]["coeficients"] = np.array(new_config["objective_function"]) * (-1)
-    current_iteration["base_variables"] = result["slack_variables"]
+    current_iteration["z"]["coeficients"] = separe_artificial_coeficients( np.array(new_config["objective_function"]))
+    current_iteration["z"]["coeficients"]["reals"] *= -1 if new_config["objective"] == "MAXIMIZE" else 1
+    current_iteration["z"]["value"] = {"real": 0.0, "artificial": 0.0}
+    current_iteration["base_variables"] = []
+    
     i = 0
     for r in new_config["restrictions"]:
         #Ignore lower_bound_limits (temporary)
         if(convertions.is_inferior_limit_restriction(r)):
             continue
+        
+        item = {
+            "coeficients": np.array(r["coeficients"]),
+            "value": r["value"],
+            "base": ""
+        }
+        for s in result["slack_variables"]:
+            if item["coeficients"][result["variables"].index(s)] == 1:
+                item["base"] = s
+                break
+        for a in result["artificial_variables"]:
+            if item["coeficients"][result["variables"].index(a)] == 1:
+                item["base"] = a
+                break
 
-        current_iteration["expressions"].append(
-            {
-                "coeficients": np.array(r["coeficients"]),
-                "value": r["value"],
-                "base": result["slack_variables"][i]
-            })
+        current_iteration["expressions"].append(item)
+        current_iteration["base_variables"].append(item["base"])
         i+=1
     
     #Handle artificial variables
+    for a in result["artificial_variables"]:
+        i = result["variables"].index(a)
+        for e in current_iteration["expressions"]:
+            if(e["coeficients"][i] == 1):
+                current_iteration["z"]["coeficients"]["artificials"] -= e["coeficients"]
+                current_iteration["z"]["coeficients"]["artificials"][i] = 0.0
+                current_iteration["z"]["value"]["artificial"] -= e["value"]
+                e["base"] = a
+                break
 
     #Start the loop process
     num_of_vars = len(result["variables"])
@@ -89,6 +175,7 @@ def run(configs, output):
             coeficients.append(e["coeficients"])
             values.append(e["value"])
 
+        #Apply 0 to the non-basic variables
         for i in range(0, num_of_vars):
             x = result["variables"][i]
             if current_iteration["base_variables"].__contains__(x):
@@ -108,7 +195,7 @@ def run(configs, output):
         (min_value, base_in_index) = min(current_iteration["z"]["coeficients"])
         
         #Verify if it's optimum
-        if min_value >= 0:
+        if min_value["artificial"] > 0 or (min_value["artificial"] == 0 and min_value["real"] >= 0):
             result["optimum_point"] = current_iteration["target_point"].tolist()
             result["optimum_value"] = current_iteration["z"]["value"]
             current_iteration["is_optimum"] = True
@@ -122,8 +209,9 @@ def run(configs, output):
         base_out = None
         for i in range(0, len(current_iteration["expressions"])):
             e = current_iteration["expressions"][i]
-            v = e["value"] / e["coeficients"][base_in_index]
-            if(v < min_v):
+            n = e["coeficients"][base_in_index]
+            v = abs(e["value"] / n) if n != 0 else float("inf")
+            if(v <= min_v):
                 min_v = v
                 target_index = i
                 base_out = e["base"]
@@ -135,7 +223,7 @@ def run(configs, output):
 
         #Update system
         next_iteration = create_iteration(result)
-        next_iteration["z"] = reduce_expression(base_in_index, pivo, current_iteration["z"])
+        next_iteration["z"] = reduce_z(base_in_index, pivo, current_iteration["z"])
         next_iteration["base_variables"] = list(map(lambda a : 
                                                 current_iteration["base_in"] if a == current_iteration["base_out"] 
                                                 else a, current_iteration["base_variables"]))
@@ -149,15 +237,24 @@ def run(configs, output):
                 next_iteration["expressions"].append(new_e)
             
         current_iteration = next_iteration
-    #Write output
     
+    #Write output
+    result["optimum_point"] = round_list(result["optimum_point"])
+    result["optimum_value"] = get_z_text(result["optimum_value"]["real"], result["optimum_value"]["artificial"])
     for iteration in result["iterations"]:
-        iteration["target_point"] = iteration["target_point"].tolist()
-        iteration["z"]["coeficients"] = iteration["z"]["coeficients"].tolist()
-        for exp in iteration["expressions"]:
-            c = exp["coeficients"]
-            if isinstance(c, np.ndarray):
-                exp["coeficients"] = c.tolist()
+        iteration["target_point"] = round_list(iteration["target_point"])
 
+        aux = []
+        c = iteration["z"]["coeficients"]
+        for i in range(0,len(c["reals"])):
+            txt = get_z_text(c["reals"][i], c["artificials"][i])
+            aux.append(txt)
+        iteration["z"]["coeficients"] = aux
+        iteration["z"]["value"] = get_z_text(iteration["z"]["value"]["real"], iteration["z"]["value"]["artificial"])
+
+        for exp in iteration["expressions"]:
+            exp["coeficients"] = round_list(exp["coeficients"])
+            exp["value"] = round(exp["value"], PRECISION)
+                
     output["result"] = result
     return output

@@ -3,6 +3,14 @@ import sys
 import numpy as np
 import graphic_methods as gm
 
+PRECISION = 3
+
+def round_list(arr = []):
+    out = []
+    for n in arr:
+        out.append(round(n, PRECISION))
+    return out
+
 #The simplex_primal function receives an Object containg all inputs and configurations
 def run(configs, output):
     (viable_region, start_point) = gm.viability_region(configs)
@@ -73,9 +81,14 @@ def run(configs, output):
         if not "value" in p:
             p["value"] = "None"
         
-        result["points"].append({"coords": np.ndarray.tolist(p["coords"]), "label": p["label"], "value": p["value"]})
+        result["points"].append(
+        {
+            "coords": round_list(p["coords"]),
+            "label": p["label"],
+            "value": round(p["value"], PRECISION)
+        })
 
     result["points_count"] = len(result["points"])
     result["optimum_point"] = optimum_point["label"]
-    result["optimum_value"] = optimum_point["value"]
+    result["optimum_value"] = round(optimum_point["value"], PRECISION)
     output["result"] = result

@@ -1,9 +1,9 @@
 {
     "integer_solution": false,
     "method": "TABULAR",
-    "type": "PRIMAL",
     "objective": "MINIMIZE",
-    "objective_function": [0.4, 0.5],
+    "objective_function": [0.4, 0.4],
+    "problem_type": "DUAL",
     "restrictions": [
         {
             "coeficients": [0.3, 0.1],

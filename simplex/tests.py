@@ -71,7 +71,7 @@ problema_radioterapico = {
     "variable_names": ["x1", "x2"]
 }
 
-test_list = [1]
+test_list = [6]
 
 for n in test_list:
     match n:
@@ -96,6 +96,14 @@ for n in test_list:
             print("viability_region in extended_problem test: ")
             out = graphic_methods.viability_region(convertions.extended_problem(input))
             print(len(out[0]))
+            print("")
+        case 5:
+            print(" test: ")
+            print(primal_tabular.separe_artificial_coeficients([1., 2., "M"]))
+            print("")
+        case 6:
+            print(" test: ")
+            print(convertions.dual_problem(problema_radioterapico))
             print("")
         case _:
             print(" test: ")

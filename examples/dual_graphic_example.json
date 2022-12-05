@@ -1,0 +1,41 @@
+{
+    "result": {
+        "iterations_path": [
+            "P0"
+        ],
+        "iterations_count": 1,
+        "variables": [
+            "y1",
+            "y2",
+            "y3"
+        ],
+        "points": [
+            {
+                "coords": [
+                    -0.5,
+                    1.1,
+                    0.0
+                ],
+                "label": "P0",
+                "value": 5
+            },
+            {
+                "coords": [
+                    0.0,
+                    0.8,
+                    0.0
+                ],
+                "label": "P1",
+                "value": 5
+            }
+        ],
+        "points_count": 2,
+        "optimum_point": "P0",
+        "optimum_value": 5.25,
+        "has_multiple_solution": false,
+        "multiple_solutions": []
+    },
+    "status": 0,
+    "ellapsed_time": 1.9991397857666016,
+    "error_msg": ""
+}
