@@ -162,6 +162,8 @@ def graphic_view(request):
                      "error_msg": ""}
 
     #Create rescrictions coordinates
+    optimum_point =  output_data["result"]["optimum_point"]
+    optimum_value = output_data["result"]["optimum_value"]
     restrictions = []
     max_x = 0
     max_y = 0
@@ -200,7 +202,11 @@ def graphic_view(request):
     sorted_data = data.sort_values(by=['x'])
 
     # Create graphic base
-    fig = go.Figure()
+    layout = go.Layout(
+        autosize=True,
+        dragmode="pan",
+        margin=dict({'b': 0, 'l':0, 'r':0, 't':0}))
+    fig = go.Figure(layout=layout)
 
     # plot restrictions
     restrictions.append([[0, 0], [max_x, 0]])
@@ -257,9 +263,11 @@ def graphic_view(request):
             x=countour[1][0],  xref='x',
             y=countour[1][1], yref='y', arrowwidth=1, arrowcolor="blue")
 
+    config = {'responsive': True}
+                
+    graph = plot(fig, output_type="div", config=config)
 
-    graph = plot(fig, output_type="div")
-
-    return render(request, 'resultado_grafico.html', context={"graph": graph})
+    return render(request, 'resultado_grafico.html', context={"graph": graph, "optimum_point":optimum_point,
+                           "optimum_value": optimum_value} )
 
 # https://getbootstrap.com/docs/4.3/components/forms/

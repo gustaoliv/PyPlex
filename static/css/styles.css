@@ -39,8 +39,6 @@ input[type="radio"]:checked, input[type="checkbox"]:checked{
 }
 .forms{
     align-items: center;
-    padding: 20px;
-    margin: 20px;
     font-size: 25px;
 }
 .form-label{ 
@@ -80,8 +78,6 @@ label{
 .area-result{
     border: 5px solid #3AB4B9;
     border-radius: 15px;
-    margin: 10px;
-    padding:10px;
     font-family: 'Montserrat', sans-serif;
     font-weight: 300;
 }
@@ -97,13 +93,16 @@ label{
     float: none;
 }
 
+.grafico{
+    padding: 10px;
+}
 
 @media screen and (max-width: 720px) {
     *,h3, .forms, .results, .form-control{
         font-family: 'Anton', sans-serif;
-        font-size: 20px;
+        font-size: 12px;
     }
     .next,.next:hover{
-        font-size: 30px; 
+        font-size: 20px; 
     }
 }
