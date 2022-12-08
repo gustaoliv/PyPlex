@@ -1,0 +1,35 @@
+{
+    "integer_solution": false,
+    "method": "TABULAR",
+    "objective": "MINIMIZE",
+    "objective_function": [0.4, 0.5],
+    "problem_type": "DUAL",
+    "restrictions": [
+        {
+            "coeficients": [0.3, 0.1],
+            "type": "<=",
+            "value": 2.7
+        },
+        {
+            "coeficients": [0.5, 0.5],
+            "type": "=",
+            "value": 6
+        },
+        {
+            "coeficients": [0.6, 0.4],
+            "type": ">=",
+            "value": 6
+        },
+        {
+            "coeficients": [1,0],
+            "type": ">=",
+            "value": 0
+        },
+        {
+            "coeficients": [0,1],
+            "type": ">=",
+            "value": 0
+        }
+    ],
+    "variable_names": ["x1", "x2"]
+}
