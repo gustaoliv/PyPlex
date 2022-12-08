@@ -1,6 +1,6 @@
 import numpy as np
 import itertools
-import convertions
+from simplex import convertions
 
 #This function must get all the restriction intercections and compose a list with the label and coordenades
 

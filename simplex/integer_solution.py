@@ -1,6 +1,6 @@
 import numpy as np
 import math
-from graphic_methods import dot
+from simplex.graphic_methods import dot
  
 #Branch-and-Bound (B&B) method
 def get_first_real_index(arr):

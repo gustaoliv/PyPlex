@@ -1,5 +1,5 @@
-import convertions
-import primal_graphic
+from simplex import convertions
+from simplex import primal_tabular
 
 def run(configs, output):
     new_config = {}
@@ -12,4 +12,4 @@ def run(configs, output):
         output["error_msg"] = "Unable to define the dual problem. Error: " + e.__str__()
         return
     
-    primal_graphic.run(new_config, output)
+    primal_tabular.run(new_config, output)

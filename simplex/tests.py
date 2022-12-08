@@ -1,9 +1,6 @@
-import os
-import sys
-import convertions
-import graphic_methods
-import primal_graphic
-import primal_tabular
+from simplex import convertions
+from simplex import graphic_methods
+from simplex import primal_tabular
 
 input = {
     "method": "GRAPHIC",

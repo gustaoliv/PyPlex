@@ -1,14 +1,16 @@
 import json
 import os
 import time
-import primal_tabular
-import primal_graphic
-import dual_tabular
-import dual_graphic
-import integer_solution
+from simplex import primal_tabular
+from simplex import primal_graphic
+from simplex import dual_tabular
+from simplex import dual_graphic
+from simplex import integer_solution
+from simplex import convertions
+
 
 #The main function receives a Json Object containg all inputs and configurations
-def main(json_string):
+def solve_simplex(json_string):
     configs = json.loads(json_string)
 
     start_time = time.time()
@@ -57,7 +59,7 @@ def main(json_string):
 
 #The code below have no effect if you are running from another file
 if __name__ == "__main__":
-    script_dir = os.path.dirname(__file__).replace("simplex\\","") #<-- absolute dir the script is in
+    script_dir = os.path.dirname(__file__).replace("simplex-web\\","") #<-- absolute dir the script is in
 
     
     rel_path = "examples\problema_radioterapico.json" #Modify this path to test another input

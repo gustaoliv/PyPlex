@@ -1,8 +1,5 @@
-import json
-import sys
-import numpy as np
-import graphic_methods as gm
-import convertions
+from simplex import graphic_methods as gm
+from simplex import convertions
 
 #The simplex_primal function receives an Object containg all inputs and configurations
 def run(configs, output):

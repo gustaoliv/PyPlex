@@ -1,6 +1,7 @@
 import json
 import pdb
 from django.shortcuts import render
+import simplex.main
 from .forms import *
 from .utils import *
 from django.shortcuts import redirect
@@ -9,7 +10,7 @@ from plotly.offline import plot
 import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
-
+from simplex import *
 
 # Create your views here.
 def first_step(request):
@@ -63,27 +64,12 @@ def third_step(request):
 
 
 def tabular_view(request):
+    json_request = make_json(request.session)
+    json_request = json.dumps(json_request)
+    pdb.set_trace()
+    json_response = simplex.main.solve_simplex(json_request)
+    pdb.set_trace()
     try:
-        json_request = make_json(request.session)
-        json_response = {"result": {"optimum_point": [2.0, 2.0, 0.0, 0.0], "optimum_value": 10.0, "iterations": [
-                        {"z": {"coeficients": [-3.0, -2.0, -0.0, -0.0], "value": 0},
-                        "expressions": [{"coeficients": [2.0, 1.0, 1.0, 0.0], "value": 6, "base": "sx3"},
-                         {"coeficients": [1.0, 2.0, 0.0, 1.0], "value": 6, "base": "sx4"}],
-                        "base_variables": ["sx3", "sx4"], "target_point": [0.0, 0.0, 6.0, 6.0], "base_in": "x1", "base_out": "sx3",
-                        "is_optimum": False}, {"z": {"coeficients": [0.0, -0.5, 1.5, 0.0], "value": 9.0},
-                        "expressions": [{"coeficients": [1.0, 0.5, 0.5, 0.0], "value": 3.0, "base": "x1"},
-                        {"coeficients": [0.0, 1.5, -0.5, 1.0], "value": 3.0, "base": "sx4"}],
-                        "base_variables": ["x1", "sx4"], "target_point": [3.0, 0.0, 0.0, 3.0], "base_in": "x2",
-                        "base_out": "sx4", "is_optimum": False},
-                        {"z": {"coeficients": [0.0, 0.0, 1.333, 0.333], "value": 10.0}, "expressions": [
-                        {"coeficients": [1.0, 0.0, 0.666, -0.333], "value": 2.0, "base": "x1"},
-                        {"coeficients": [0.0, 1.0, -0.333, 0.666], "value": 2.0, "base": "x2"}],
-                        "base_variables": ["x1", "x2"], "target_point": [2.0, 2.0, 0.0, 0.0], "base_in": "", "base_out": "",
-                        "is_optimum": True}], "iterations_count": 3, "variables": ["x1", "x2", "sx3", "sx4"],
-                        "input_variables": ["x1", "x2"], "slack_variables": ["sx3", "sx4"],
-                        "artificial_variables": []}, "status": 0, "ellapsed_time": 1.9989013671875,
-                        "error_msg": ""}
-
         headers = ["Base", "z"] + json_response["result"]["variables"] + ["b"]
         interactions = json_response["result"]["iterations"]
         optimum_point =  json_response["result"]["optimum_point"]

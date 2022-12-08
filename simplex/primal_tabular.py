@@ -1,6 +1,5 @@
 import numpy as np
-import convertions
-import math
+from simplex import convertions
 
 PRECISION = 3
 
