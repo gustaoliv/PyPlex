@@ -1,5 +1,13 @@
 import numpy as np
 
+PRECISION = 3
+
+def round_list(arr = []):
+    out = []
+    for n in arr:
+        out.append(round(n, PRECISION))
+    return out
+
 def extended_problem(configs = {}):
     output = configs.copy()
 
@@ -31,7 +39,7 @@ def extended_problem(configs = {}):
     #Update the restriction coeficients
     length = len(ref[0]["coeficients"])
     for r in res:
-        r["coeficients"] = concat(r["coeficients"], np.zeros(adicional_vars))
+        r["coeficients"] = np.array(concat(r["coeficients"], np.zeros(adicional_vars)))
     
     #Update the objective function coeficients
     output["objective_function"] = concat(output["objective_function"], np.zeros(adicional_vars))
@@ -48,8 +56,8 @@ def extended_problem(configs = {}):
     output["variables"] = output["variable_names"].copy()
     pos = length
     for r in ref:
-        c = concat(r["coeficients"], np.zeros(adicional_vars))
-
+        c = np.array(concat(r["coeficients"], np.zeros(adicional_vars)))
+        
         if ["<=", ">="].count(r["type"]):
             c[pos] = 1 if r["type"] == "<=" else -1
             pos+=1
@@ -115,7 +123,7 @@ def dual_problem(configs = {}):
         if r["type"] != "=":
             c = {
                 "coeficients": np.zeros(num_res),
-                "type": r["type"],
+                "type": ">=",
                 "value": 0
             }
             c["coeficients"][i] = 1
@@ -128,7 +136,7 @@ def dual_problem(configs = {}):
 
 def concat(arr1 = [], arr2 = []):
     (l1, l2) = (len(arr1), len(arr2))
-    out = np.zeros(l1 + l2)
+    out = [0] * (l1 + l2)
     for i in range(0, l1):
         out[i] = arr1[i]
     for i in range(0, l2):

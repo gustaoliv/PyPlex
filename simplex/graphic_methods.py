@@ -1,7 +1,9 @@
 import numpy as np
 import itertools
+import convertions
 
 #This function must get all the restriction intercections and compose a list with the label and coordenades
+
 def viability_region(configs):
     restrictions = configs["restrictions"]
     num_of_restrictions = len(restrictions)
@@ -13,7 +15,7 @@ def viability_region(configs):
     points = []
     points_count = 0
 
-    #If the the problem have an artificial variable, converts the value 'M' to infinity
+    #If the problem have an artificial variable, converts the value 'M' to infinity
     for r in restrictions:
         r["coeficients"] = list(map(lambda a : float('inf') if a == 'M' else a, r["coeficients"]))
     
@@ -27,12 +29,11 @@ def viability_region(configs):
         values = []
         #Join all coeficients and values
         for i in range(0, num_of_coeficients):
-            coeficients.append(item[i]["coeficients"])
+            coeficients.append(np.array(item[i]["coeficients"]))
             values.append(item[i]["value"])
-
         #Solve it
         try:
-            x = np.linalg.solve(coeficients, values)
+            x = convertions.round_list(np.linalg.solve(coeficients, values))
             points.append({"label": "", "coords": x, "restrictions": item})
             points_count += 1
         except Exception as e:
@@ -40,7 +41,6 @@ def viability_region(configs):
             continue
     
     #Verify if the points meets all the restrictions
-    #print(restrictions)
     viable_points = []
     for i in range(0, points_count):
         p = points[i]
@@ -153,5 +153,11 @@ def have_priority(p1, p2, priority_list):
             return True
     return False
 
-def calc_point_value(point, function):
-    return np.dot(np.array(point["coords"]), np.array(function))
+def calc_point_value(point, obj_function):
+    return np.dot(np.array(point["coords"]), np.array(obj_function))
+
+def dot(arr1, arr2):
+    value = 0
+    for n in range(0,len(arr1)):
+        value += arr1[n] * arr2[n]
+    return value

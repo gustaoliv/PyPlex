@@ -1,7 +1,6 @@
 {
     "method": "VIABILITY_REGION",
-    "objective": "MAXIMIZE",
-    "objective_function": [3, 2],
+    "extended": false,
     "restrictions": [
         {
             "coeficients": [2,1],
@@ -23,7 +22,5 @@
             "type": ">=",
             "value": 0
         }
-    ],
-    "variable_names": ["x1", "x2"],
-    "integer_solution": false
+    ]
 }

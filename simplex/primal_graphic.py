@@ -2,17 +2,19 @@ import json
 import sys
 import numpy as np
 import graphic_methods as gm
-
-PRECISION = 3
-
-def round_list(arr = []):
-    out = []
-    for n in arr:
-        out.append(round(n, PRECISION))
-    return out
+import convertions
 
 #The simplex_primal function receives an Object containg all inputs and configurations
 def run(configs, output):
+    
+    #Get the extended problem
+    #try:
+    #    configs = convertions.extended_problem(configs)
+    #except Exception as e:
+    #    output["status"] = -1
+    #    output["error_msg"] = "Unable to define the extended problem. Error: " + e.__str__()
+    #    return
+    
     (viable_region, start_point) = gm.viability_region(configs)
     if len(viable_region) == 0:
         output["status"] = -1
@@ -23,6 +25,10 @@ def run(configs, output):
 
     #Process the objective function to define the variable priorities
     obj_f = configs["objective_function"]
+    for i in range(0, len(obj_f)):
+        if obj_f[i] == "M":
+            obj_f[i] = 1000000.0
+
     priorities = gm.get_priority_list(obj_f)
 
     #Run the algorithm until the solution is finded
@@ -40,8 +46,13 @@ def run(configs, output):
             if "value" not in p:
                 p["value"] = gm.calc_point_value(p, obj_f)
 
-            if p["value"] >= next["value"]:
-                next = p
+            if configs["problem_type"] == "MAXIMIZE":
+                if p["value"] >= next["value"]:
+                    next = p
+            else:
+                if p["value"] <= next["value"]:
+                    next = p
+            
         if next == target_point:
             break
 
@@ -72,10 +83,7 @@ def run(configs, output):
         result["iterations_path"].append(p["label"])
     
     result["iterations_count"] = len(result["iterations_path"])
-    if configs.keys().__contains__("extended_problem"):
-        result["variables"] = configs["variable_names_extended"]
-    else:
-        result["variables"] = configs["variable_names"]
+    result["variables"] = configs["variable_names"]
     
     for p in viable_region:
         if not "value" in p:
@@ -83,12 +91,12 @@ def run(configs, output):
         
         result["points"].append(
         {
-            "coords": round_list(p["coords"]),
+            "coords": convertions.round_list(p["coords"]),
             "label": p["label"],
-            "value": round(p["value"], PRECISION)
+            "value": round(p["value"], convertions.PRECISION)
         })
 
     result["points_count"] = len(result["points"])
     result["optimum_point"] = optimum_point["label"]
-    result["optimum_value"] = round(optimum_point["value"], PRECISION)
+    result["optimum_value"] = round(optimum_point["value"], convertions.PRECISION)
     output["result"] = result

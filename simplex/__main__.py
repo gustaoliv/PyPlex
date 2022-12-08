@@ -33,14 +33,14 @@ def main(json_string):
                 output["status"] = 1
     except Exception as e:
         output["error_msg"] = "Um erro inesperado ocorreu: " + e.__str__()
-        output["status"] = -1
+        output["status"] = 2
 
     if configs["integer_solution"] and output["status"] == 0:
         try:
             integer_solution.run(configs, output)
         except Exception as e:
-            output["error_msg"] = "Nao foi possivel encontrar a solucao inteira."
-            output["status"] = -1
+            output["error_msg"] = "Nao foi possivel encontrar a solucao inteira. Erro: " + str(e)
+            output["status"] = 3
 
     output["ellapsed_time"] = (time.time() - start_time) * 1000
 
@@ -50,7 +50,7 @@ def main(json_string):
     except Exception as e:
         output["result"] = ""
         output["error_msg"] = "Nao foi possivel converter o resultado."
-        output["status"] = 2
+        output["status"] = 4
         output_json = json.dumps(output)
 
     return output_json

@@ -2,7 +2,7 @@
     "integer_solution": false,
     "method": "TABULAR",
     "objective": "MINIMIZE",
-    "objective_function": [0.4, 0.4],
+    "objective_function": [0.4, 0.5],
     "problem_type": "DUAL",
     "restrictions": [
         {
