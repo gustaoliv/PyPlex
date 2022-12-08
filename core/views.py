@@ -64,12 +64,14 @@ def third_step(request):
 
 
 def tabular_view(request):
-    json_request = make_json(request.session)
-    json_request = json.dumps(json_request)
-    pdb.set_trace()
-    json_response = simplex.main.solve_simplex(json_request)
-    pdb.set_trace()
+
+
     try:
+        json_request = make_json(request.session)
+        json_request = json.dumps(json_request)
+        json_response = simplex.main.solve_simplex(json_request)
+        json_response = json.loads(json_response)
+
         headers = ["Base", "z"] + json_response["result"]["variables"] + ["b"]
         interactions = json_response["result"]["iterations"]
         optimum_point =  json_response["result"]["optimum_point"]
@@ -92,7 +94,9 @@ def tabular_view(request):
         return render(request, 'resultado_tabular.html',
                       context={"tables":tables, "headers": headers, "optimum_point":optimum_point,
                                "optimum_value": optimum_value})
-    except:
+    except Exception as e:
+        print(e)
+        pdb.set_trace()
         return redirect('/')
 
 

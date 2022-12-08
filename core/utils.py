@@ -41,14 +41,17 @@ def make_json(session_dict):
     restrictions = treat_restrictions(restr, int(session_dict["numVar"]))
 
     requestJson = {
-        "method": session_dict["method"],
+        "problem_type": session_dict["method"],
+        "method": session_dict["exibition_type"],
         "objective": session_dict["objective"],
         "objective_function": funcObj,
         "restrictions": restrictions,
     }
 
     if "integer_solution" in session_dict.keys():
-        requestJson["integerSolution"] = session_dict["integer_solution"] == 'on'
+        requestJson["integer_solution"] = True
+    else:
+        requestJson["integer_solution"] = False
 
     var_names = []
     for i in range(1, int(session_dict["numVar"]) + 1):
