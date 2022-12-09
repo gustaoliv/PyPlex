@@ -9,9 +9,9 @@ def treat_restrictions(restrictions, num_variables):
         current_restriction.append(restrictions[i])
         if len(current_restriction) == num_variables + 2:
             restrictions_list.append({
-                "coeficients": [int(val) for val in current_restriction[:-2]],
+                "coeficients": [float(val) for val in current_restriction[:-2]],
                 "type": current_restriction[-2],
-                "value": int(current_restriction[-1])
+                "value": float(current_restriction[-1])
             })
 
             current_restriction = []
@@ -39,7 +39,7 @@ def make_json(session_dict):
         if 'a' in str(k):
             restr.append(v)
         else:
-            funcObj.append(int(v))
+            funcObj.append(float(v))
 
     restrictions = treat_restrictions(restr, int(session_dict["numVar"]))
 
