@@ -1,3 +1,6 @@
+import pdb
+
+
 def treat_restrictions(restrictions, num_variables):
     restrictions_list = []
 

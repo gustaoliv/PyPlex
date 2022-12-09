@@ -5,7 +5,7 @@ from django import forms
 class FirstStepForm(forms.Form):
     METHOD_CHOICES = [('PRIMAL', 'Primal'),
                       ('DUAL', 'Dual')]
-    EXIBITION_TYPE_CHOICES = [('GRAFICA', 'Gráfica'),
+    EXIBITION_TYPE_CHOICES = [('GRAPHIC', 'Gráfica'),
                               ('TABULAR', 'Tabular')]
 
     exibition_type = forms.ChoiceField(choices=EXIBITION_TYPE_CHOICES,initial=EXIBITION_TYPE_CHOICES[1],

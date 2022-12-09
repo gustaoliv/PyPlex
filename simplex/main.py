@@ -63,6 +63,6 @@ if __name__ == "__main__":
 
     
     rel_path = "examples\problema_radioterapico.json" #Modify this path to test another input
-    input_sample = open(os.path.join(script_dir, rel_path), "r")
+    input_sample = open('C:\\Users\\gusta\\Meu Drive\\Faculdade\\6° Período\\Pesquisa Operacional\\Trabalho Final\\algorithm-simplex\\examples\\input_sample.json', "r")
 
-    print(main(input_sample.read()))
+    print(solve_simplex(input_sample.read()))

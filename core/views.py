@@ -57,15 +57,13 @@ def second_step(request):
 
 
 def third_step(request):
-    if request.session['exibition_type'] == "GRAFICA":
+    if request.session['exibition_type'] == "GRAPHIC":
         return redirect('/grafica')
     else:
         return redirect('/tabular')
 
 
 def tabular_view(request):
-
-
     try:
         json_request = make_json(request.session)
         json_request = json.dumps(json_request)
@@ -103,45 +101,11 @@ def tabular_view(request):
 def graphic_view(request):
     try:
         #input_data = make_json(request.session)
-        input_data = {
-            "integer_solution": False,
-            "method": "GRAPHIC",
-            "type": "PRIMAL",
-            "objective": "MAXIMIZE",
-            "objective_function": [3, 2],
-            "restrictions": [
-                {
-                    "coeficients": [2,1],
-                    "type": "<=",
-                    "value": 6
-                },
-                {
-                    "coeficients": [1,2],
-                    "type": "<=",
-                    "value": 6
-                },
-                {
-                    "coeficients": [1,0],
-                    "type": ">=",
-                    "value": 0
-                },
-                {
-                    "coeficients": [0,1],
-                    "type": ">=",
-                    "value": 0
-                }
-            ],
-            "variable_names": ["x1", "x2"]
-        }
-
-        output_data = {"result": {"iterations_path": ["P0", "P2", "P3"], "iterations_count": 3, "variables": ["x1", "x2"],
-                                    "points": [{"coords": [0.0, 0.0], "label": "P0", "value": 0.0},
-                                               {"coords": [0.0, 3.0], "label": "P1", "value": 6.0},
-                                               {"coords": [3.0, 0.0], "label": "P2", "value": 9.0},
-                                               {"coords": [2.0, 2.0], "label": "P3", "value": 10.0}], "points_count": 4,
-                                    "optimum_point": "P3", "optimum_value": 10.0, "has_multiple_solution": False,
-                                    "multiple_solutions": []}, "status": 0, "ellapsed_time": 1.9984245300292969,
-                         "error_msg": ""}
+        input_data = make_json(request.session)
+        input_data = json.dumps(input_data)
+        output_data = simplex.main.solve_simplex(input_data)
+        output_data = json.loads(output_data)
+        pdb.set_trace()
 
         #Create rescrictions coordinates
         optimum_point =  output_data["result"]["optimum_point"]
@@ -251,5 +215,7 @@ def graphic_view(request):
 
         return render(request, 'resultado_grafico.html', context={"graph": graph, "optimum_point":optimum_point,
                                "optimum_value": optimum_value} )
-    except:
+    except Exception as e:
+        print(e)
+        pdb.set_trace()
         return redirect('/')
