@@ -43,7 +43,7 @@ def run(configs, output):
             if "value" not in p:
                 p["value"] = gm.calc_point_value(p, obj_f)
 
-            if configs["problem_type"] == "MAXIMIZE":
+            if configs["objective"] == "MAXIMIZE":
                 if p["value"] >= next["value"]:
                     next = p
             else:

@@ -8,6 +8,7 @@ from django.shortcuts import redirect
 from django.http import JsonResponse
 from plotly.offline import plot
 import plotly.graph_objects as go
+import plotly.express as px
 import pandas as pd
 import numpy as np
 from simplex import *
@@ -100,19 +101,18 @@ def tabular_view(request):
 
 def graphic_view(request):
     try:
-        #input_data = make_json(request.session)
         input_data = make_json(request.session)
-        input_data = json.dumps(input_data)
-        output_data = simplex.main.solve_simplex(input_data)
-        output_data = json.loads(output_data)
-        pdb.set_trace()
+        json_request = json.dumps(input_data)
+        json_response = simplex.main.solve_simplex(json_request)
+        output_data = json.loads(json_response)
 
         #Create rescrictions coordinates
-        optimum_point =  output_data["result"]["optimum_point"]
+        optimum_point = output_data["result"]["optimum_point"]
         optimum_value = output_data["result"]["optimum_value"]
         restrictions = []
         max_x = 0
         max_y = 0
+
         for restrict in input_data["restrictions"][:-len(input_data["variable_names"])]:
             coord = []
             # x = 0
@@ -132,6 +132,7 @@ def graphic_view(request):
                 max_y = max([coord[0][1], coord[1][1]])
 
             restrictions.append(coord)
+
 
         # Construct DataFrame
         x = []
@@ -169,7 +170,7 @@ def graphic_view(request):
         fig.add_trace(go.Scatter(x=sorted_data["x"], y=sorted_data["y"], text=sorted_data["lables"],
                                  mode='lines+markers+text',
                                  marker_size=[20]*len(x), marker_color = "green",
-                                 fill='tonexty', fillcolor='#00CC96', textposition="top right"))
+                                 textposition="top right"))
 
 
         # plot arrows
@@ -183,7 +184,7 @@ def graphic_view(request):
 
         #Create countour plot lines
         quant_lines = 20
-        first_mmc = mmc([input_data["objective_function"][0], input_data["objective_function"][1]]) * 2
+        first_mmc = output_data["result"]["optimum_value"]
         steps = first_mmc / quant_lines
         countours = []
         for value in np.arange(0, first_mmc + 1, steps):
