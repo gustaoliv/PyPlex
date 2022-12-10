@@ -64,7 +64,10 @@ $ python manage.py runserver
 
 ## :memo: Licença ##
 
-Feito por <a href="https://github.com/gustaoliv" target="_blank">gustaoliv</a>
+Feito por: 
+- Back-end: <a href="https://github.com/gustaoliv" target="_blank">Gustavo Oliveira</a>, 
+- Algoritmos: <a href="https://github.com/JMateusSC" target="_blank">João Mateus Castro</a>, 
+- Front-end: <a href="https://github.com/wagnerolliveira" target="_blank">Wagner Oliveira</a>, 
 
 &#xa0;
 
