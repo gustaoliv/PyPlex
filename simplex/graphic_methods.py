@@ -46,15 +46,15 @@ def viability_region(configs):
         p = points[i]
         viable = True
         for r in restrictions:
-            value = np.dot(np.array(r["coeficients"]), p["coords"])
-            match(r["type"]):
+            value = round(np.dot(np.array(r["coeficients"]), p["coords"]), 1)
+            match (r["type"]):
                 case ">=":
-                    viable = value >= r["value"]
+                    viable = (value >= r["value"] or np.isclose(value, r["value"]))
                 case "<=":
-                    viable = value <= r["value"]
+                    viable = (value <= r["value"] or np.isclose(value, r["value"]))
                 case "=":
-                    viable = value == r["value"]
-            if(not viable):
+                    viable = np.isclose(value, r["value"])
+            if (not viable):
                 break
         else:
             viable_points.append(p)

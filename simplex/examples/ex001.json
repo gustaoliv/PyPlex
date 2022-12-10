@@ -1,0 +1,23 @@
+{
+  "problem_type": "PRIMAL",
+  "method": "GRAPHIC",
+  "objective": "MAXIMIZE",
+  "objective_function": [11.1, 13.4],
+  "restrictions": [
+    {
+      "coeficients": [0.54, 0.0],
+      "type": "<=",
+      "value": 10.0
+    },
+    {
+      "coeficients": [0.0, 0.95],
+      "type": "<=",
+      "value": 8.0
+    },
+    { "coeficients": [24.0, 36.0], "type": "<=", "value": 600.0 },
+    { "coeficients": [1, 0], "type": ">=", "value": 0 },
+    { "coeficients": [0, 1], "type": ">=", "value": 0 }
+  ],
+  "integer_solution": false,
+  "variable_names": ["x1", "x2"]
+}

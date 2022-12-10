@@ -58,10 +58,10 @@ def solve_simplex(json_string):
 
 #The code below have no effect if you are running from another file
 if __name__ == "__main__":
-    script_dir = os.path.dirname(__file__).replace("simplex\\","") #<-- absolute dir the script is in
+    script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
 
     
-    rel_path = "examples\input_sample.json" #Modify this path to test another input
+    rel_path = "examples\ex001.json" #Modify this path to test another input
     input_sample = open(os.path.join(script_dir, rel_path), "r")
 
     print(solve_simplex(input_sample.read()))
