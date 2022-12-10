@@ -1,5 +1,8 @@
+import os
+import sys
 from simplex import convertions
 from simplex import graphic_methods
+from simplex import primal_graphic
 from simplex import primal_tabular
 
 input = {

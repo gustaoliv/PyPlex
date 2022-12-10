@@ -1,5 +1,5 @@
-from simplex import convertions
-from simplex import primal_tabular
+import convertions
+import primal_tabular
 
 def run(configs, output):
     new_config = {}

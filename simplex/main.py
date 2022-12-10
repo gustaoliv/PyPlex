@@ -6,11 +6,9 @@ from simplex import primal_graphic
 from simplex import dual_tabular
 from simplex import dual_graphic
 from simplex import integer_solution
-from simplex import convertions
-
 
 #The main function receives a Json Object containg all inputs and configurations
-def solve_simplex(json_string):
+def main(json_string):
     configs = json.loads(json_string)
 
     start_time = time.time()
@@ -59,10 +57,10 @@ def solve_simplex(json_string):
 
 #The code below have no effect if you are running from another file
 if __name__ == "__main__":
-    script_dir = os.path.dirname(__file__).replace("simplex-web\\","") #<-- absolute dir the script is in
+    script_dir = os.path.dirname(__file__).replace("simplex\\","") #<-- absolute dir the script is in
 
     
-    rel_path = "examples\problema_radioterapico.json" #Modify this path to test another input
-    input_sample = open('C:\\Users\\gusta\\Meu Drive\\Faculdade\\6° Período\\Pesquisa Operacional\\Trabalho Final\\algorithm-simplex\\examples\\input_sample.json', "r")
+    rel_path = "examples\input_sample.json" #Modify this path to test another input
+    input_sample = open(os.path.join(script_dir, rel_path), "r")
 
-    print(solve_simplex(input_sample.read()))
+    print(main(input_sample.read()))

@@ -65,7 +65,7 @@ def viability_region(configs):
         And if the problem have more then 2 variable, the result may be the edges of a multidimencional object.
     """
     start_point = get_start_point(viable_points, configs)
-    insert_points_label(viable_points, start_point)
+    insert_points_label(restrictions, viable_points, start_point)
     link_points(viable_points)
     return (viable_points, start_point)
 
@@ -96,26 +96,34 @@ def get_start_point(points, configs):
     print("Couldn't find initial point.")
     return -1
 
-def insert_points_label(points, start):
-    points_with_label = []
-    start["label"] = "P0"
-    points.remove(start)
-    points_with_label.append(start)
-
-    counter = 1
-    current_point = start
-    while len(points) > 0:
-        for r in current_point["restrictions"]:
-            for p in points:
-                if p["restrictions"].__contains__(r):
-                    p["label"] = "P"+str(counter)
-                    current_point = p
-                    points.remove(p)
-                    points_with_label.append(p)
-                    counter+=1
-                    break
+def insert_points_label(restrictions, points, start):
+    if len(points[0]["coords"]) > 2:
+        return
     
-    points.extend(points_with_label)
+    relationships = []
+    for r in restrictions:
+        arr = []
+        for p in points:
+            if p["restrictions"].__contains__(r):
+                arr.append(p)
+        relationships.append(arr)
+
+    DEFAULT_DIRECTION = 0
+    current_restriction = start["restrictions"][DEFAULT_DIRECTION]
+    current_point = start
+    counter = 0
+    while True:
+        current_point["label"] = "P"+str(counter)
+        counter+=1
+
+        index = restrictions.index(current_restriction)
+        relationships[index].remove(current_point)
+        current_point = relationships[index][0]
+        i = (current_point["restrictions"].index(current_restriction) + 1) % 2
+        current_restriction = current_point["restrictions"][i]
+
+        if current_point == start:
+            break
 
 def link_points(points):
     for p1 in points:
