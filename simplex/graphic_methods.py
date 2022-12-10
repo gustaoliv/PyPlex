@@ -16,9 +16,16 @@ def viability_region(configs):
     points_count = 0
 
     #If the problem have an artificial variable, converts the value 'M' to infinity
+    new_restrictions = []
     for r in restrictions:
-        r["coeficients"] = list(map(lambda a : float('inf') if a == 'M' else a, r["coeficients"]))
-    
+        if not convertions.is_inferior_limit_restriction(r) and is_dependent_restriction(r):
+            continue
+        new_r = r.copy()
+        new_r["coeficients"] = list(map(lambda a : float('inf') if a == 'M' else a, r["coeficients"]))
+        new_restrictions.append(new_r)
+
+    restrictions = new_restrictions
+
     #The first thing to do is to combine the restrictions in a way that it can be solved later
     combinations = itertools.combinations(restrictions, num_of_coeficients)
     
@@ -169,3 +176,13 @@ def dot(arr1, arr2):
     for n in range(0,len(arr1)):
         value += arr1[n] * arr2[n]
     return value
+
+def is_dependent_restriction(r):
+    if r["value"] != 0:
+        return False
+
+    for n in r["coeficients"]:
+        if n < 0:
+            return False
+
+    return True
