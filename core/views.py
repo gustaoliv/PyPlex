@@ -69,7 +69,8 @@ def tabular_view(request):
         json_response = simplex.main.solve_simplex(json_request)
         json_response = json.loads(json_response)
 
-        pdb.set_trace()
+        if len(json_response["error_msg"]) > 0:
+            raise Exception("Solution Error:" + json_response["error_msg"])
 
         headers = ["Base", "z"] + json_response["result"]["variables"] + ["b"]
         interactions = json_response["result"]["iterations"]
@@ -106,13 +107,8 @@ def graphic_view(request):
         json_response = simplex.main.solve_simplex(json_request)
         output_data = json.loads(json_response)
 
-        pdb.set_trace()
-
         if len(output_data["error_msg"]) > 0:
-            pdb.set_trace()
-            print(output_data)
-
-        pdb.set_trace()
+            raise Exception("Solution Error:" + output_data["error_msg"])
 
         # Create rescrictions coordinates
         optimum_point = output_data["result"]["optimum_point"]
@@ -163,7 +159,7 @@ def graphic_view(request):
             values.append(coord["value"])
 
         data = pd.DataFrame({"x": x, "y": y, "lables": lables, "values": values})
-        sorted_data = data.sort_values(by=['x'])
+        sorted_data = data.sort_values(by=['lables'])
 
         # Create graphic base
         layout = go.Layout(
@@ -189,7 +185,7 @@ def graphic_view(request):
         fig.add_trace(go.Scatter(x=sorted_data["x"], y=sorted_data["y"], text=sorted_data["lables"],
                                  mode='lines+markers+text',
                                  marker_size=[20] * len(x), marker_color="green",
-                                 fill='tonexty', fillcolor='#00CC96', textposition="top right"))
+                                 fill='toself', fillcolor='#00CC96', textposition="top right"))
 
         # plot arrows
         indexed_data = data.set_index("lables")
