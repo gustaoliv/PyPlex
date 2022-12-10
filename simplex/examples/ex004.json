@@ -1,0 +1,56 @@
+{
+    "problem_type": "PRIMAL",
+    "method": "GRAPHIC",
+    "objective": "MINIMIZE",
+    "objective_function": [
+        0.4,
+        0.5
+    ],
+    "restrictions": [
+        {
+            "coeficients": [
+                0.3,
+                0.1
+            ],
+            "type": "<=",
+            "value": 2.7
+        },
+        {
+            "coeficients": [
+                0.5,
+                0.5
+            ],
+            "type": "=",
+            "value": 6.0
+        },
+        {
+            "coeficients": [
+                0.6,
+                0.4
+            ],
+            "type": ">=",
+            "value": 6.0
+        },
+        {
+            "coeficients": [
+                1,
+                0
+            ],
+            "type": ">=",
+            "value": 0
+        },
+        {
+            "coeficients": [
+                0,
+                1
+            ],
+            "type": ">=",
+            "value": 0
+        }
+    ],
+    "integer_solution": false,
+    "variable_names": [
+        "x1",
+        "x2"
+    ]
+}

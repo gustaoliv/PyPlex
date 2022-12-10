@@ -43,13 +43,13 @@ def reduce_z(index, pivo, exp):
     return {
         "coeficients": 
         {
-            "reals": np.array(exp["coeficients"]["reals"]) + np.array(pivo["coeficients"]) * real_factor,
-            "artificials": np.array(exp["coeficients"]["artificials"]) + np.array(pivo["coeficients"]) * artificial_factor
+            "reals": round_list(np.array(exp["coeficients"]["reals"]) + np.array(pivo["coeficients"]) * real_factor),
+            "artificials": round_list(np.array(exp["coeficients"]["artificials"]) + np.array(pivo["coeficients"]) * artificial_factor)
         },
         "value":
         {
             "real": exp["value"]["real"] + pivo["value"] * real_factor,
-            "artificial": exp["value"]["artificial"] + pivo["value"] * artificial_factor
+            "artificial": round(exp["value"]["artificial"] + pivo["value"] * artificial_factor, PRECISION)
         }
     }
 
@@ -79,10 +79,10 @@ def separe_artificial_coeficients(arr = []):
     
     return out
 
-def round_list(arr = []):
+def round_list(arr = [], precision = PRECISION):
     out = []
     for n in arr:
-        out.append(round(n, PRECISION))
+        out.append(round(n, precision))
     return out
 
 def get_z_text(r = 0, a = 0):
@@ -232,14 +232,19 @@ def run(configs, output):
         min_v = float("inf")
         target_index = None
         base_out = None
-        for i in range(0, len(current_iteration["expressions"])):
-            e = current_iteration["expressions"][i]
-            n = e["coeficients"][base_in_index]
-            v = abs(e["value"] / n) if n != 0 else float("inf")
-            if(v <= min_v and not changed_variables.__contains__(e["base"])):
-                min_v = v
-                target_index = i
-                base_out = e["base"]
+        while(True):
+            for i in range(0, len(current_iteration["expressions"])):
+                e = current_iteration["expressions"][i]
+                n = e["coeficients"][base_in_index]
+                v = abs(e["value"] / n) if n != 0 else float("inf")
+                if(v <= min_v and not changed_variables.__contains__(e["base"])):
+                    min_v = v
+                    target_index = i
+                    base_out = e["base"]
+            if target_index == None:
+                changed_variables = []
+            else:
+                break
 
         changed_variables.append(current_iteration["base_in"])
         current_iteration["base_out"] = base_out
