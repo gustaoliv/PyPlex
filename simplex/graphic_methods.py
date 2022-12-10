@@ -104,9 +104,6 @@ def get_start_point(points, configs):
     return -1
 
 def insert_points_label(restrictions, points, start):
-    if len(points[0]["coords"]) > 2:
-        return
-    
     relationships = []
     for r in restrictions:
         arr = []
@@ -125,6 +122,9 @@ def insert_points_label(restrictions, points, start):
 
         index = restrictions.index(current_restriction)
         relationships[index].remove(current_point)
+        if len(relationships[index]) == 0:
+            break
+
         current_point = relationships[index][0]
         i = (current_point["restrictions"].index(current_restriction) + 1) % 2
         current_restriction = current_point["restrictions"][i]

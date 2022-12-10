@@ -84,14 +84,14 @@ def run(configs, output):
     
     result["iterations_count"] = len(result["iterations_path"])
     result["variables"] = configs["variable_names"]
-    
+    number_of_vars = len(configs["variable_names"])
+
     for p in viable_region:
         if "value" not in p:
             p["value"] = 0
         
-        result["points"].append(
-        {
-            "coords": convertions.round_list(p["coords"]),
+        result["points"].append({
+            "coords": convertions.round_list(p["coords"][0:number_of_vars]),
             "label": p["label"],
             "value": round(p["value"], convertions.PRECISION)
         })

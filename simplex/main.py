@@ -61,7 +61,7 @@ if __name__ == "__main__":
     script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
 
     
-    rel_path = "examples\ex003.json" #Modify this path to test another input
+    rel_path = "examples\ex004.json" #Modify this path to test another input
     input_sample = open(os.path.join(script_dir, rel_path), "r")
 
     print(solve_simplex(input_sample.read()))
