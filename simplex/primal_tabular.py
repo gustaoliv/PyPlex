@@ -3,12 +3,14 @@ from simplex import convertions
 
 PRECISION = 3
 
-def min(vec):
+def min(vec, exceptions = [], not_null = False):
     v1 = vec["reals"]
     v2 = vec["artificials"]
-    index = 0
-    min = [v1[0], v2[0]]
-    for i in range(1, len(v1)):
+    index = -1
+    min = [float('inf'), float('inf')]
+    for i in range(0, len(v1)):
+        if exceptions.__contains__(i) or (not_null and np.isclose(v1[i], 0)):
+            continue
         if v2[i] < min[1] or (v2[i] == min[1] and v1[i] < min[0]):
             index = i
             min = [v1[i], v2[i]]
@@ -162,22 +164,10 @@ def run(configs, output):
                 e["base"] = a
                 break
 
-    #Process objective function coeficients to define the bounds of each one 
-    sign_relation = np.zeros(num_of_vars)
-    for r in new_config["restrictions"]:
-        if convertions.is_inferior_limit_restriction(r):
-            i = r["coeficients"].tolist().index(1)
-            if r["type"] == ">=":
-                sign_relation[i] = 1    #This coeficient must be >= 0
-            elif r["type"] == "<=":
-                sign_relation[i] = -1   #This coeficient must be <= 0
-            else:
-                sign_relation[i] = 0    #This coeficient can be anything
-
     #Start the loop process
     k = 0 #Temp
     changed_variables = []
-    while True and k < 10:
+    while True and k < 100:
         k+=1
 
         #Try get target point
@@ -204,23 +194,42 @@ def run(configs, output):
             print("Couldn't solve the problem.")
         
         #Select the in variable
-        base_in_value = {}
-        base_in_index = {}
-        for i in range(0, num_of_vars):
-            real = current_iteration["z"]["coeficients"]["reals"][i]
-            artf = current_iteration["z"]["coeficients"]["artificials"][i]
-            match sign_relation[i]:
-                case 1:
+        base_in_value = None
+        base_in_index = -1
+        exceptions = []
+        while len(exceptions) < num_of_vars:
+            (base_in_value, base_in_index) = min(current_iteration["z"]["coeficients"], exceptions, True)
+
+            if base_in_value["artificial"] == 0 and base_in_value["real"] >= 0:
+                if base_in_index >= len(result["input_variables"]):
+                    exceptions.append(base_in_index)
+                    base_in_value = None
+                    base_in_index = -1
+                    continue
+
+                min_v = float('inf')
+                min_i = -1
+                for i in range(0, len(current_iteration["expressions"])):
+                    e = current_iteration["expressions"][i]
+                    n = e["coeficients"][base_in_index]
+
+                    if n < 0 and e["value"] > 0:
+                        v = abs(e["value"] / n) if n != 0 else float("inf")
+                        if v <= min_v:
+                            min_v = v
+                            min_i = i
+
+                if min_i == -1:
+                    exceptions.append(base_in_index)
+                    base_in_value = None
+                    base_in_index = -1
+                else:
                     break
-                case -1:
-                    break
-                case 0:
-                    break
-        
-        (base_in_value, base_in_index) = min(current_iteration["z"]["coeficients"])
-        
+            else:
+                break
+
         #Verify if it's optimum
-        if base_in_value["artificial"] > 0 or (base_in_value["artificial"] == 0 and base_in_value["real"] >= 0):
+        if base_in_index == -1:
             result["optimum_point"] = current_iteration["target_point"].tolist()
             result["optimum_value"] = current_iteration["z"]["value"]
             current_iteration["is_optimum"] = True

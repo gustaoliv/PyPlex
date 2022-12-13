@@ -123,7 +123,7 @@ def dual_problem(configs = {}):
         if r["type"] != "=":
             c = {
                 "coeficients": np.zeros(num_res),
-                "type": ">=",
+                "type": r["type"],
                 "value": 0
             }
             c["coeficients"][i] = 1
