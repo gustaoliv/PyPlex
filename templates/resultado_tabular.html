@@ -27,7 +27,11 @@
                         {% for line in table %}
                             <tr>
                                 {% for column in line %}
-                                    <td scope="col">{{column}}</td>
+                                    {% if column.tag == 'bold' %}
+                                        <td scope="col" style="background-color: red">{{column.value}}</td>
+                                    {% else %}
+                                        <td scope="col">{{column.value}}</td>
+                                    {% endif %}
                                 {% endfor %}
                             </tr>
                         {% endfor %}
