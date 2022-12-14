@@ -113,8 +113,14 @@ def insert_points_label(restrictions, points, start):
         relationships.append(arr)
 
     DEFAULT_DIRECTION = 0
-    current_restriction = start["restrictions"][DEFAULT_DIRECTION]
     current_point = start
+    current_restriction = {}
+    for i in range(0,len(relationships)):
+        r = relationships[i]
+        if len(r) == 2 and r.__contains__(current_point):
+            current_restriction = restrictions[i]
+            break
+
     counter = 0
     while True:
         current_point["label"] = "P"+str(counter)
@@ -122,14 +128,16 @@ def insert_points_label(restrictions, points, start):
 
         index = restrictions.index(current_restriction)
         relationships[index].remove(current_point)
+
         if len(relationships[index]) == 0:
             break
 
         current_point = relationships[index][0]
-        i = (current_point["restrictions"].index(current_restriction) + 1) % 2
-        current_restriction = current_point["restrictions"][i]
 
-        if current_point == start:
+        k = current_point["restrictions"].index(current_restriction)
+        current_restriction = current_point["restrictions"][(k+1)%2]
+
+        if current_point["label"]:
             break
 
 def link_points(points):

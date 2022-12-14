@@ -1,7 +1,7 @@
 {
     "problem_type": "DUAL",
-    "method": "GRAPHIC",
-    "objective": "MAXIMIZE",
+    "method": "TABULAR",
+    "objective": "MINIMIZE",
     "objective_function": [
         0.4,
         0.5

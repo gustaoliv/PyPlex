@@ -47,10 +47,10 @@ def run(configs, output):
                 p["value"] = gm.calc_point_value(p, obj_f)
 
             if configs["objective"] == "MAXIMIZE":
-                if p["value"] >= next["value"]:
+                if p["value"] > next["value"]:
                     next = p
             else:
-                if p["value"] <= next["value"]:
+                if p["value"] < next["value"]:
                     next = p
             
         if next == target_point:

@@ -1,11 +1,12 @@
 import numpy as np
 from simplex import convertions
 
-PRECISION = 3
+CALC_PRECISION = 6
+EXIBITION_PRECISION = 3
 
 def min(vec, exceptions = [], not_null = False):
-    v1 = vec["reals"]
-    v2 = vec["artificials"]
+    v1 = round_list(vec["reals"], CALC_PRECISION)
+    v2 = round_list(vec["artificials"], CALC_PRECISION)
     index = -1
     min = [float('inf'), float('inf')]
     for i in range(0, len(v1)):
@@ -45,13 +46,13 @@ def reduce_z(index, pivo, exp):
     return {
         "coeficients": 
         {
-            "reals": round_list(np.array(exp["coeficients"]["reals"]) + np.array(pivo["coeficients"]) * real_factor),
-            "artificials": round_list(np.array(exp["coeficients"]["artificials"]) + np.array(pivo["coeficients"]) * artificial_factor)
+            "reals": round_list(np.array(exp["coeficients"]["reals"]) + np.array(pivo["coeficients"]) * real_factor,CALC_PRECISION),
+            "artificials": round_list(np.array(exp["coeficients"]["artificials"]) + np.array(pivo["coeficients"]) * artificial_factor,CALC_PRECISION)
         },
         "value":
         {
-            "real": exp["value"]["real"] + pivo["value"] * real_factor,
-            "artificial": round(exp["value"]["artificial"] + pivo["value"] * artificial_factor, PRECISION)
+            "real": round(exp["value"]["real"] + pivo["value"] * real_factor,CALC_PRECISION),
+            "artificial": round(exp["value"]["artificial"] + pivo["value"] * artificial_factor, CALC_PRECISION)
         }
     }
 
@@ -81,7 +82,7 @@ def separe_artificial_coeficients(arr = []):
     
     return out
 
-def round_list(arr = [], precision = PRECISION):
+def round_list(arr = [], precision = CALC_PRECISION):
     out = []
     for n in arr:
         out.append(round(n, precision))
@@ -89,8 +90,8 @@ def round_list(arr = [], precision = PRECISION):
 
 def get_z_text(r = 0, a = 0):
     out = ""
-    r = round(r,PRECISION)
-    a = round(a,PRECISION)
+    r = round(r, EXIBITION_PRECISION)
+    a = round(a, EXIBITION_PRECISION)
     if(r != 0):
         out += str(r)
     if(a != 0):
@@ -98,6 +99,13 @@ def get_z_text(r = 0, a = 0):
     if out == "":
         out = "0"
     return out
+
+def all_basic_are_null(new_config, current_iteration):
+    for v in current_iteration["base_variables"]:
+        i = new_config["variables"].index(v)
+        if not (np.isclose(current_iteration["z"]["coeficients"]["reals"][i],0) and np.isclose(current_iteration["z"]["coeficients"]["artificials"][i],0)):
+            return False
+    return True
 
 #The simplex_primal function receives an Object containg all inputs and configurations
 def run(configs, output):
@@ -167,7 +175,7 @@ def run(configs, output):
     #Start the loop process
     k = 0 #Temp
     changed_variables = []
-    while True and k < 100:
+    while True and k < 10:
         k+=1
 
         #Try get target point
@@ -196,6 +204,7 @@ def run(configs, output):
         #Select the in variable
         base_in_value = None
         base_in_index = -1
+
         exceptions = []
         while len(exceptions) < num_of_vars:
             (base_in_value, base_in_index) = min(current_iteration["z"]["coeficients"], exceptions, True)
@@ -228,18 +237,16 @@ def run(configs, output):
             else:
                 break
 
-        #Verify if it's optimum
+        # Verify if it's optimum
         if base_in_index == -1:
             result["optimum_point"] = current_iteration["target_point"].tolist()
             result["optimum_value"] = current_iteration["z"]["value"]
             current_iteration["is_optimum"] = True
             break
-        
-        current_iteration["base_in"] = result["variables"][base_in_index]
 
         #Select out variable
         min_v = float("inf")
-        target_index = None
+        target_index = -1
         base_out = None
         while(True):
             for i in range(0, len(current_iteration["expressions"])):
@@ -255,9 +262,17 @@ def run(configs, output):
             else:
                 break
 
-        changed_variables.append(current_iteration["base_in"])
+        # Verify if it's optimum
+        if target_index == -1:
+            result["optimum_point"] = current_iteration["target_point"].tolist()
+            result["optimum_value"] = current_iteration["z"]["value"]
+            current_iteration["is_optimum"] = True
+            break
+
+        current_iteration["base_in"] = result["variables"][base_in_index]
         current_iteration["base_out"] = base_out
-        
+        changed_variables.append(current_iteration["base_in"])
+
         #Normalize pivo line
         pivo = convertions.normalize_restriction(current_iteration["expressions"][target_index], base_in_index)
         pivo["base"] = current_iteration["base_in"]
@@ -278,12 +293,17 @@ def run(configs, output):
                 next_iteration["expressions"].append(new_e)
             
         current_iteration = next_iteration
-    
+
+    if result["optimum_point"] == None:
+        output["error_msg"] = "Nao foi possivel encontrar uma solucao para o problema."
+        output["status"] = 0
+        return output
+
     #Write output
     result["optimum_point"] = round_list(result["optimum_point"])
     result["optimum_value"] = get_z_text(result["optimum_value"]["real"], result["optimum_value"]["artificial"])
     for iteration in result["iterations"]:
-        iteration["target_point"] = round_list(iteration["target_point"])
+        iteration["target_point"] = round_list(iteration["target_point"], EXIBITION_PRECISION)
 
         aux = []
         c = iteration["z"]["coeficients"]
@@ -294,8 +314,8 @@ def run(configs, output):
         iteration["z"]["value"] = get_z_text(iteration["z"]["value"]["real"], iteration["z"]["value"]["artificial"])
 
         for exp in iteration["expressions"]:
-            exp["coeficients"] = round_list(exp["coeficients"])
-            exp["value"] = round(exp["value"], PRECISION)
+            exp["coeficients"] = round_list(exp["coeficients"], EXIBITION_PRECISION)
+            exp["value"] = round(exp["value"], EXIBITION_PRECISION)
                 
     output["result"] = result
     return output
