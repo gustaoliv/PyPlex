@@ -16,10 +16,10 @@
         <div class="area-result text-center table-responsive">
             {% for table in tables %}
                 <table class="table table-striped table-hover mb-4">
-                    <thead class="table-dark">
+                    <thead class="tabular">
                         <tr>
                             {% for header in headers %}
-                                <th scope="col">{{header}}</th>
+                                <th scope="col" style="font-family: 'Montserrat';">{{header}}</th>
                             {% endfor %}
                         </tr>
                     </thead>
@@ -28,7 +28,7 @@
                             <tr>
                                 {% for column in line %}
                                     {% if column.tag == 'bold' %}
-                                        <td scope="col" style="background-color: red">{{column.value}}</td>
+                                        <td scope="col" style="background-color: rgba(255,255,0,0.25)">{{column.value}}</td>
                                     {% else %}
                                         <td scope="col">{{column.value}}</td>
                                     {% endif %}

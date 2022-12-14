@@ -18,6 +18,10 @@ def first_step(request):
             if key == 'csrfmiddlewaretoken':
                 continue
             request.session[key] = request.POST[key]
+        if (request.session['method']=='DUAL') and (int(request.session['numRest'])>2) :
+            messages.error(request, 'Só é permitido no máximo 2 restrições para solucionar problemas de forma gráfica usando o método Dual.')
+            form = FirstStepForm()
+            return render(request, 'formulario.html', {'form': form})
         return redirect('/second-step')
     else:
         request.session.flush()
