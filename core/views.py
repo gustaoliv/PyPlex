@@ -67,15 +67,15 @@ def tabular_view(request):
         json_request = make_json(request.session)
         json_request = json.dumps(json_request)
         json_response = simplex.main.solve_simplex(json_request)
-        json_response = json.loads(json_response)
+        output_data = json.loads(json_response)
 
         if len(json_response["error_msg"]) > 0:
-            raise Exception("Solution Error:" + json_response["error_msg"])
+            raise Exception("Solution Error:" + output_data ["error_msg"])
 
-        headers = ["Base", "z"] + json_response["result"]["variables"] + ["b"]
-        interactions = json_response["result"]["iterations"]
-        optimum_point = json_response["result"]["optimum_point"]
-        optimum_value = json_response["result"]["optimum_value"]
+        headers = ["Base", "z"] + output_data ["result"]["variables"] + ["b"]
+        interactions = output_data ["result"]["iterations"]
+        optimum_point = output_data ["result"]["optimum_point"]
+        optimum_value = output_data["result"]["optimum_value"]
         tables = []
 
         for iter in interactions:
@@ -107,9 +107,9 @@ def tabular_view(request):
 
             tables.append(current_table)
 
-        return render(request, 'resultado_tabular.html',
-                      context={"tables": tables, "headers": headers, "optimum_point": optimum_point,
-                               "optimum_value": optimum_value})
+        context = {"tables": tables, "headers": headers, "optimum_point": optimum_point,"optimum_value": optimum_value}
+
+        return render(request, 'resultado_tabular.html', context=context)
     except Exception as e:
         print(e)
         messages.error(request, 'Algo de inesperado aconteceu. Verifique as entradas.')
@@ -247,8 +247,16 @@ def graphic_view(request):
 
         graph = plot(fig, output_type="div", config=config)
 
-        return render(request, 'resultado_grafico.html', context={"graph": graph, "optimum_point": optimum_point,
-                                                                  "optimum_value": optimum_value})
+        context = {"graph": graph, "optimum_point": optimum_point, "optimum_value": optimum_value}
+
+        if bool(output_data["result"]["has_multiple_solution"]):
+            context["multiple_solutions"] = output_data["result"]["multiple_solutions"]
+
+        if "integer_solution" in output_data["result"].keys():
+            context["integer_solution"] = output_data["result"]["integer_solution"]
+
+        return render(request, 'resultado_grafico.html', context=context)
+
     except Exception as e:
         print(e)
         messages.error(request, 'Algo de inesperado aconteceu. Verifique as entradas.')
