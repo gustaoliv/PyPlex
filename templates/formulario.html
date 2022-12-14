@@ -9,7 +9,10 @@
                 {% if messages %}
                     {% for message in messages %}
                     <div class="mb-4">
-                        <div class="alert alert-danger">{{message}}</div>
+                        <div class="alert alert-danger error" id="error">
+                            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                            <strong>{{message}}</strong>
+                        </div>
                     </div>
                     {% endfor %}
                 {% endif %}
