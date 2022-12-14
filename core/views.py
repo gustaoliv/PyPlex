@@ -79,15 +79,31 @@ def tabular_view(request):
         tables = []
 
         for iter in interactions:
+            index_base_in = headers.index(iter["base_in"]) if iter["base_in"] in headers else -1
+
             current_table = []
-            lineZ = ["z", "1"] + iter["z"]["coeficients"]
-            lineZ.append(iter["z"]["value"])
-            current_table.append(lineZ)
+            line_z = ["z", "1"] + iter["z"]["coeficients"]
+            line_z.append(iter["z"]["value"])
+            treated_line_z = []
+            for value in line_z:
+                treated_line_z.append({"tag": "normal", "value": value})
+
+            if index_base_in >= 0:
+                treated_line_z[index_base_in]["tag"] = "bold"
+            current_table.append(treated_line_z)
 
             for exp in iter["expressions"]:
+                tag = "bold" if exp["base"] == iter["base_out"] else "normal"
+
                 current_line = [exp["base"], "0"] + exp["coeficients"]
                 current_line.append(exp["value"])
-                current_table.append(current_line)
+                treated_line = []
+                for value in current_line:
+                    treated_line.append({"tag": tag, "value": value})
+
+                if index_base_in >= 0:
+                    treated_line[index_base_in]["tag"] = "bold"
+                current_table.append(treated_line)
 
             tables.append(current_table)
 
