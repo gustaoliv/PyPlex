@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['localhost', '3.87.2.30', 'pyplex.gocode.dev.br']
+ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0', '3.87.2.30', 'pyplex.gocode.dev.br']
 
 
 # Application definition
