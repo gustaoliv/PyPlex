@@ -128,7 +128,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-log_file = os.path.join(BASE_DIR, 'django.log') if DEBUG else "/var/log/django.log"
+log_file = os.path.join(BASE_DIR, 'django.log') if DEBUG else "/var/log/nginx/pyplex.gocode.dev.br-error.log"
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
