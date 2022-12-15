@@ -117,6 +117,9 @@ def tabular_view(request):
         if len(output_data["error_msg"]) > 0:
             context["error_msg"] = "Não foi possivel encontrar a solução inteira"
 
+        if "integer_solution" in output_data["result"].keys():
+            context["integer_solution"] = output_data["result"]["integer_solution"]
+
         return render(request, 'resultado_tabular.html', context=context)
     except Exception as e:
         print(e)
