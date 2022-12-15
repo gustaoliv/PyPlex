@@ -73,7 +73,7 @@ def tabular_view(request):
         json_response = simplex.main.solve_simplex(json_request)
         output_data = json.loads(json_response)
 
-        if len(json_response["error_msg"]) > 0:
+        if len(output_data["error_msg"]) > 0:
             raise Exception("Solution Error:" + output_data ["error_msg"])
 
         headers = ["Base", "z"] + output_data ["result"]["variables"] + ["b"]
