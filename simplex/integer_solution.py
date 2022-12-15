@@ -70,8 +70,7 @@ def run(configs, output):
     best_integer_point = None
     number_of_variables = len(output["result"]["input_variables"])
 
-    optimum_label = output["result"]["optimum_point"]
-    optimum_point = {}
+    optimum_point = output["result"]["optimum_point"]
 
     root = create_node(
         optimum_point["coords"][0:number_of_variables],
