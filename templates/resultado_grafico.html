@@ -8,13 +8,21 @@
         <div class="results">
             <h3>Ponto ótimo:{{optimum_point}}</h3>
             <h3>Valor ótimo: {{optimum_value}}</h3>
+
+            {% if multiple_solutions %}
+                <h3>Soluções múltiplas: {{multiple_solutions}}</h3>
+            {% endif %}
+
+            {% if integer_solution %}
+                <h3>Solução inteira: Z* = integer_solution.value <-> P = integer_solution.coords</h3>
+            {% endif %}
+
         </div>
         <div class="area-result d-flex justify-content-center">
-            <div class="w-100" >
+            <div class="w-100">
                 {% autoescape off %}
                     {{graph}}
                 {% endautoescape %}
-<!--            <canvas id="myChart" width="500" height="500"></canvas>-->
             </div>
         </div>
         <div class="d-flex bd-highlight mb-4">
@@ -26,5 +34,4 @@
             </div> 
         </div>
     </div>
-
 {% endblock %}

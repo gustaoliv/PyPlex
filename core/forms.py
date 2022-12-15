@@ -14,7 +14,7 @@ class FirstStepForm(forms.Form):
                                                   'id': 'tipo'}), label='Tipo',
                                        )
     method = forms.ChoiceField(choices=METHOD_CHOICES, initial=METHOD_CHOICES[0],
-                               widget=forms.RadioSelect(attrs={'class': 'form-check-input'}), label='Método')
+                               widget=forms.RadioSelect(attrs={'class': 'form-check-input','id': 'metodo'}), label='Método')
 
     numVar = forms.IntegerField(label='Número de variáveis', min_value=2,
                                 widget=forms.NumberInput(attrs={'class': 'form-control', 'id': 'val'}))
