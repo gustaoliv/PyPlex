@@ -62,7 +62,7 @@ def run(configs, output):
 
     #Check for multiple solutions
     multiple_solutions = []
-    for p in visited_points:
+    for p in viable_region:
         if p != optimum_point and p["value"] == optimum_point["value"]:
             multiple_solutions.append(p["label"])
 

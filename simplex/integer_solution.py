@@ -9,7 +9,7 @@ def get_first_real_index(arr):
             return i
     return -1
 
-
+best_integer_point = None
 def run(configs, output):
     def create_node(coords = [], value = None, viable = False, possible = False):
         return {
@@ -18,7 +18,7 @@ def run(configs, output):
             "viable": viable,
             "possible": possible,
             "left": None,
-            "rigth": None
+            "right": None
         }
     
     def is_integer_solution(point):
@@ -27,7 +27,7 @@ def run(configs, output):
                 return False
         return True
     
-    def evaluate(point):
+    def evaluate(point, best_integer_point):
         for r in configs["restrictions"]:
             value = dot(r["coeficients"], point["coords"])
             match(r["type"]):
@@ -38,7 +38,7 @@ def run(configs, output):
                 case "=":
                     point["possible"] = value == r["value"]
             if(not point["possible"]):
-                return
+                return best_integer_point
         
         if is_integer_solution(point):
             point["viable"] = True
@@ -49,24 +49,38 @@ def run(configs, output):
                     best_integer_point = point
             else:
                 best_integer_point = point
-            return
+            return best_integer_point
             
         i = get_first_real_index(point["coords"])
         n = point["coords"][i]
         point["left"] = create_node(point["coords"].copy())
         point["left"]["coords"][i] = math.floor(n)
-        evaluate(point["left"])
+        point["left"]["value"] = dot(point["left"]["coords"], configs["objective_function"])
+        best_integer_point = evaluate(point["left"], best_integer_point)
 
         point["right"] = create_node(point["coords"].copy())
         point["right"]["coords"][i] = math.ceil(n)
-        evaluate(point["right"])
-    
+        point["right"]["value"] = dot(point["right"]["coords"], configs["objective_function"])
+        best_integer_point = evaluate(point["right"], best_integer_point)
+        return best_integer_point
+
+    if not output["result"].keys().__contains__("input_variables"):
+        output["result"]["input_variables"] = output["result"]["variables"]
+
     best_integer_point = None
     number_of_variables = len(output["result"]["input_variables"])
+
+    optimum_label = output["result"]["optimum_point"]
+    optimum_point = {}
+    for p in output["result"]["points"]:
+        if p["label"] == optimum_label:
+            optimum_point = p
+            break
+
     root = create_node(
-        output["result"]["optimum_point"][0:number_of_variables],
+        optimum_point["coords"][0:number_of_variables],
         float(output["result"]["optimum_value"]))
-    evaluate(root)
+    best_integer_point = evaluate(root, best_integer_point)
 
     #Update output
     if best_integer_point == None:
@@ -74,10 +88,6 @@ def run(configs, output):
         output["error_msg"] = "Nao foi possivel encontrar uma solucao inteira para este problema."
     else:
         output["result"]["integer_solution"] = {
-            "optimum_point": {
-                "coords": best_integer_point["coords"],
-                "value": best_integer_point["value"],
-                "label": best_integer_point["label"]
-            },
-            "tree": root
+            "coords": best_integer_point["coords"],
+            "value": best_integer_point["value"]
         }

@@ -1,0 +1,17 @@
+{
+  "problem_type": "PRIMAL",
+  "method": "GRAPHIC",
+  "objective": "MAXIMIZE",
+  "objective_function": [2, 2],
+  "restrictions": [
+    {
+      "coeficients": [2, 2],
+      "type": "<=",
+      "value": 9.0
+    },
+    { "coeficients": [1, 0], "type": ">=", "value": 0 },
+    { "coeficients": [0, 1], "type": ">=", "value": 0 }
+  ],
+  "integer_solution": true,
+  "variable_names": ["x1", "x2"]
+}
