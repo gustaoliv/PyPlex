@@ -74,7 +74,7 @@ def tabular_view(request):
         json_response = simplex.main.solve_simplex(json_request)
         output_data = json.loads(json_response)
 
-        if len(output_data["error_msg"]) > 0:
+        if len(output_data["error_msg"]) > 0 and "Nao foi possivel encontrar a solucao inteira" not in output_data["error_msg"]:
             raise Exception("Solution Error:" + output_data ["error_msg"] + " | Input Data: " + str(input_data))
 
         headers = ["Base", "z"] + output_data ["result"]["variables"] + ["b"]
@@ -114,6 +114,9 @@ def tabular_view(request):
 
         context = {"tables": tables, "headers": headers, "optimum_point": optimum_point,"optimum_value": optimum_value}
 
+        if len(output_data["error_msg"]) > 0:
+            context["error_msg"] = "Não foi possivel encontrar a solução inteira"
+
         return render(request, 'resultado_tabular.html', context=context)
     except Exception as e:
         print(e)
@@ -129,7 +132,7 @@ def graphic_view(request):
         json_response = simplex.main.solve_simplex(json_request)
         output_data = json.loads(json_response)
 
-        if len(output_data["error_msg"]) > 0:
+        if len(output_data["error_msg"]) > 0  and "Nao foi possivel encontrar a solucao inteira" not in output_data["error_msg"]:
             raise Exception("Solution Error:" + output_data["error_msg"] + " | Input Data: " + str(input_data))
 
         # Create rescrictions coordinates
@@ -260,6 +263,10 @@ def graphic_view(request):
 
         if "integer_solution" in output_data["result"].keys():
             context["integer_solution"] = output_data["result"]["integer_solution"]
+
+        if len(output_data["error_msg"]) > 0:
+            context["error_msg"] = "Não foi possivel encontrar a solução inteira"
+
 
         return render(request, 'resultado_grafico.html', context=context)
 
