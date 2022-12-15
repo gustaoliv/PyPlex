@@ -72,10 +72,6 @@ def run(configs, output):
 
     optimum_label = output["result"]["optimum_point"]
     optimum_point = {}
-    for p in output["result"]["points"]:
-        if p["label"] == optimum_label:
-            optimum_point = p
-            break
 
     root = create_node(
         optimum_point["coords"][0:number_of_variables],
