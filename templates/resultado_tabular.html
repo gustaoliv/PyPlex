@@ -12,6 +12,11 @@
                 {% endfor %}
                 ]</h3>
             <h3>Valor ótimo: {{optimum_value}}</h3>
+
+            {% if error_msg %}
+                <h3>{{error_msg}}</h3>
+            {% endif %}
+
         </div>
         <div class="area-result text-center table-responsive">
             {% for table in tables %}

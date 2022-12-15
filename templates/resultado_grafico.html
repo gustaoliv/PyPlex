@@ -17,6 +17,10 @@
                 <h3>Solução inteira: Z* = {{integer_solution.value}} <-> P = {{integer_solution.coords}}</h3>
             {% endif %}
 
+            {% if error_msg %}
+                <h3>{{error_msg}}</h3>
+            {% endif %}
+
         </div>
         <div class="area-result d-flex justify-content-center">
             <div class="w-100">
