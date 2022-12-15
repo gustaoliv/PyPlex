@@ -9,7 +9,9 @@ from plotly.offline import plot
 import simplex.main
 from .forms import *
 from .utils import *
-
+import logging
+logger = logging.getLogger(__file__)
+logging.disable(logging.INFO)
 
 # Create your views here.
 def first_step(request):
@@ -18,10 +20,8 @@ def first_step(request):
             if key == 'csrfmiddlewaretoken':
                 continue
             request.session[key] = request.POST[key]
-        if (request.session['method']=='DUAL') and (int(request.session['numRest'])>2) :
-            messages.error(request, 'Só é permitido no máximo 2 restrições para solucionar problemas de forma gráfica usando o método Dual.')
-            form = FirstStepForm()
-            return render(request, 'formulario.html', {'form': form})
+        if request.session['method'] == 'DUAL' and int(request.session['numRest']) > 2:
+            request.session["exibition_type"] = "TABULAR"
         return redirect('/second-step')
     else:
         request.session.flush()
@@ -54,8 +54,9 @@ def second_step(request):
             return render(request, 'formulario2.html', {'form': form, 'numVar': range(numVar), 'numRest': range(numRest)
                 , 'classCol': f'col-sm-{int(10 / (numVar + 1))}', 'sliceRest': f'{1 + numVar}:'
                 , 'sliceObjet': f'1:{numVar + 1}'})
-        except:
+        except Exception as e:
             messages.error(request, 'Algo de inesperado aconteceu. Verifique as entradas.')
+            logger.error(e)
             return redirect('/')
 
 
@@ -68,13 +69,13 @@ def third_step(request):
 
 def tabular_view(request):
     try:
-        json_request = make_json(request.session)
-        json_request = json.dumps(json_request)
+        input_data = make_json(request.session)
+        json_request = json.dumps(input_data)
         json_response = simplex.main.solve_simplex(json_request)
         output_data = json.loads(json_response)
 
         if len(output_data["error_msg"]) > 0:
-            raise Exception("Solution Error:" + output_data ["error_msg"])
+            raise Exception("Solution Error:" + output_data ["error_msg"] + " | Input Data: " + str(input_data))
 
         headers = ["Base", "z"] + output_data ["result"]["variables"] + ["b"]
         interactions = output_data ["result"]["iterations"]
@@ -116,6 +117,7 @@ def tabular_view(request):
         return render(request, 'resultado_tabular.html', context=context)
     except Exception as e:
         print(e)
+        logger.error(e)
         messages.error(request, 'Algo de inesperado aconteceu. Verifique as entradas.')
         return redirect('/')
 
@@ -128,7 +130,7 @@ def graphic_view(request):
         output_data = json.loads(json_response)
 
         if len(output_data["error_msg"]) > 0:
-            raise Exception("Solution Error:" + output_data["error_msg"])
+            raise Exception("Solution Error:" + output_data["error_msg"] + " | Input Data: " + str(input_data))
 
         # Create rescrictions coordinates
         optimum_point = output_data["result"]["optimum_point"]
@@ -263,5 +265,6 @@ def graphic_view(request):
 
     except Exception as e:
         print(e)
+        logger.error(e)
         messages.error(request, 'Algo de inesperado aconteceu. Verifique as entradas.')
         return redirect('/')
