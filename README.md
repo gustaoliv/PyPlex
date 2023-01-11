@@ -1,11 +1,11 @@
-<h1 align="center">Trabalho Final</h1>
+<h1 align="center">PyPlex</h1>
 
 
 
 <!-- Status -->
 
 <h4 align="center"> 
-	🚧  Em construção...  🚧
+	✅ Concluído ✅
 </h4> 
 
 <hr>
@@ -22,7 +22,7 @@
 
 ## :dart: Sobre ##
 
-Aplicação Back-end desenvolvida em Django para o trabalho final da disciplina de Pesquisa Operacional.
+Aplicação desenvolvida em Django para o trabalho final da disciplina de Pesquisa Operacional do curso de Engenharia de Sistemas da Universidade Estadual de Montes Claros. O PyPlex é um aplicação que pode ser utilizada para solução de problemas de programação linear utilizando o algoritmo Simplex.
 
 
 ## :rocket: Tecnologias ##
